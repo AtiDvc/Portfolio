@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Portfolio</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background: #ffffff;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        /* =========================
+           PORTFOLIO
+        ========================= */
+
+        .portfolio {
+            width: 100vw;
+            height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* =========================
+           A4 QUERFORMAT
+           297 : 210
+        ========================= */
+
+        .sheet {
+            position: relative;
+
+            width: min(84vw, 1200px);
+            aspect-ratio: 297 / 210;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.15);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: visible;
+        }
+
+
+        /* =========================
+           PORTFOLIO BILD
+        ========================= */
+
+        #portfolioImage {
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            display: none;
+        }
+
+        #portfolioImage.visible {
+            display: block;
+        }
+
+
+        /* =========================
+           PFEILE
+        ========================= */
+
+        .arrow {
+            position: absolute;
+
+            top: 50%;
+
+            width: 30px;
+            height: 50px;
+
+            padding: 0;
+            margin: 0;
+
+            border: none;
+            outline: none;
+
+            background: transparent;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            cursor: pointer;
+
+            transform: translateY(-50%);
+
+            z-index: 10;
+
+            transition:
+                transform 0.25s ease,
+                opacity 0.25s ease;
+        }
+
+
+        .arrow:hover {
+            opacity: 0.6;
+        }
+
+
+        .arrow:focus,
+        .arrow:focus-visible,
+        .arrow:active {
+            outline: none;
+            border: none;
+            box-shadow: none;
+        }
+
+
+        .arrow svg {
+            width: 18px;
+            height: 32px;
+
+            display: block;
+        }
+
+
+        /* =========================
+           LINKER PFEIL
+        ========================= */
+
+        .arrow-left {
+            left: -55px;
+        }
+
+
+        .arrow-left svg {
+            transform: rotate(180deg);
+        }
+
+
+        .arrow-left:hover {
+            transform: translate(-5px, -50%);
+        }
+
+
+        /* =========================
+           RECHTER PFEIL
+        ========================= */
+
+        .arrow-right {
+            right: -55px;
+        }
+
+
+        .arrow-right:hover {
+            transform: translate(5px, -50%);
+        }
+
+
+        /* =========================
+           DEAKTIVIERT
+        ========================= */
+
+        .arrow.disabled {
+            opacity: 0.15;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .sheet {
+                width: 88vw;
+            }
+
+
+            .arrow {
+                width: 26px;
+                height: 44px;
+            }
+
+
+            .arrow-left {
+                left: -34px;
+            }
+
+
+            .arrow-right {
+                right: -34px;
+            }
+
+
+            .arrow svg {
+                width: 15px;
+                height: 27px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <main class="portfolio">
+
+        <div class="sheet">
+
+
+            <!-- =========================
+                 PORTFOLIO BILD
+            ========================= -->
+
+            <img
+                id="portfolioImage"
+                alt="Portfolio"
+            >
+
+
+            <!-- =========================
+                 LINKER PFEIL
+            ========================= -->
+
+            <button
+                id="prevButton"
+                class="arrow arrow-left disabled"
+                aria-label="Vorherige Seite"
+            >
+
+                <svg
+                    viewBox="0 0 462.45 818.53"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+
+                    <polygon
+                        fill="#1d1d1b"
+                        points="
+                            462.3 409.25
+                            462.41 409.14
+                            53.27 0
+                            0 53.27
+                            356.01 409.28
+                            .04 765.26
+                            53.31 818.53
+                            462.45 409.39
+                            462.3 409.25
+                        "
+                    />
+
+                </svg>
+
+            </button>
+
+
+            <!-- =========================
+                 RECHTER PFEIL
+            ========================= -->
+
+            <button
+                id="nextButton"
+                class="arrow arrow-right disabled"
+                aria-label="Nächste Seite"
+            >
+
+                <svg
+                    viewBox="0 0 462.45 818.53"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+
+                    <polygon
+                        fill="#1d1d1b"
+                        points="
+                            462.3 409.25
+                            462.41 409.14
+                            53.27 0
+                            0 53.27
+                            356.01 409.28
+                            .04 765.26
+                            53.31 818.53
+                            462.45 409.39
+                            462.3 409.25
+                        "
+                    />
+
+                </svg>
+
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        /* =========================
+           ELEMENTE
+        ========================= */
+
+        const image =
+            document.getElementById(
+                "portfolioImage"
+            );
+
+        const prevButton =
+            document.getElementById(
+                "prevButton"
+            );
+
+        const nextButton =
+            document.getElementById(
+                "nextButton"
+            );
+
+
+        /* =========================
+           ORDNER
+        ========================= */
+
+        const IMAGE_FOLDER =
+            "images/portfolio";
+
+
+        /* =========================
+           VARIABLEN
+        ========================= */
+
+        let currentPage = 1;
+
+        let maxPage = 0;
+
+
+        /* =========================
+           BILD EXISTIERT?
+        ========================= */
+
+        function checkImage(number) {
+
+            return new Promise(
+                resolve => {
+
+                    const testImage =
+                        new Image();
+
+
+                    testImage.onload =
+                        () => {
+
+                            resolve(true);
+
+                        };
+
+
+                    testImage.onerror =
+                        () => {
+
+                            resolve(false);
+
+                        };
+
+
+                    testImage.src =
+                        `${IMAGE_FOLDER}/${number}.png`;
+
+                }
+            );
+
+        }
+
+
+        /* =========================
+           ALLE PNGs FINDEN
+        ========================= */
+
+        async function findImages() {
+
+            maxPage = 0;
+
+
+            for (
+                let number = 1;
+                number <= 100;
+                number++
+            ) {
+
+                const exists =
+                    await checkImage(
+                        number
+                    );
+
+
+                /*
+                 * Sobald eine Nummer
+                 * fehlt, ist Schluss.
+                 */
+
+                if (!exists) {
+
+                    break;
+
+                }
+
+
+                maxPage = number;
+
+            }
+
+
+            /*
+             * Keine Bilder
+             */
+
+            if (maxPage === 0) {
+
+                updateButtons();
+
+                return;
+
+            }
+
+
+            /*
+             * Erstes Bild laden
+             */
+
+            showImage(1);
+
+        }
+
+
+        /* =========================
+           BILD ANZEIGEN
+        ========================= */
+
+        function showImage(number) {
+
+            if (
+                number < 1 ||
+                number > maxPage
+            ) {
+
+                return;
+
+            }
+
+
+            currentPage = number;
+
+
+            image.src =
+                `${IMAGE_FOLDER}/${number}.png`;
+
+
+            image.classList.add(
+                "visible"
+            );
+
+
+            updateButtons();
+
+        }
+
+
+        /* =========================
+           PFEILE AKTUALISIEREN
+        ========================= */
+
+        function updateButtons() {
+
+            /*
+             * Keine Bilder
+             */
+
+            if (maxPage === 0) {
+
+                prevButton.classList.add(
+                    "disabled"
+                );
+
+                nextButton.classList.add(
+                    "disabled"
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Erste Seite
+             */
+
+            if (currentPage <= 1) {
+
+                prevButton.classList.add(
+                    "disabled"
+                );
+
+            } else {
+
+                prevButton.classList.remove(
+                    "disabled"
+                );
+
+            }
+
+
+            /*
+             * Letzte Seite
+             */
+
+            if (
+                currentPage >= maxPage
+            ) {
+
+                nextButton.classList.add(
+                    "disabled"
+                );
+
+            } else {
+
+                nextButton.classList.remove(
+                    "disabled"
+                );
+
+            }
+
+        }
+
+
+        /* =========================
+           ZURÜCK
+        ========================= */
+
+        prevButton.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    currentPage > 1
+                ) {
+
+                    showImage(
+                        currentPage - 1
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           WEITER
+        ========================= */
+
+        nextButton.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    currentPage < maxPage
+                ) {
+
+                    showImage(
+                        currentPage + 1
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           TASTATUR
+        ========================= */
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "ArrowLeft" &&
+                    currentPage > 1
+                ) {
+
+                    showImage(
+                        currentPage - 1
+                    );
+
+                }
+
+
+                if (
+                    event.key === "ArrowRight" &&
+                    currentPage < maxPage
+                ) {
+
+                    showImage(
+                        currentPage + 1
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           START
+        ========================= */
+
+        findImages();
+
+    </script>
+
+</body>
+</html>

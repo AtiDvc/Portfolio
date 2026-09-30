@@ -1,0 +1,28 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio für Devata",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite --host 0.0.0.0 --open /home.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AtiDvc/Portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AtiDvc/Portfolio/issues"
+  },
+  "homepage": "https://github.com/AtiDvc/Portfolio#readme",
+  "devDependencies": {
+    "vite": "^8.3.1"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^6.3.289"
+  }
+}
