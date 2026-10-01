@@ -27,9 +27,9 @@
         }
 
 
-        /* =========================
+        /* =========================================================
            DESKTOP
-        ========================= */
+        ========================================================= */
 
         .portfolio {
             width: 100vw;
@@ -41,9 +41,9 @@
         }
 
 
-        /* =========================
-           A4 QUERFORMAT
-        ========================= */
+        /* =========================================================
+           DESKTOP A4
+        ========================================================= */
 
         .sheet {
             position: relative;
@@ -64,9 +64,9 @@
         }
 
 
-        /* =========================
+        /* =========================================================
            DESKTOP BILD
-        ========================= */
+        ========================================================= */
 
         #portfolioImage {
             width: 100%;
@@ -82,9 +82,9 @@
         }
 
 
-        /* =========================
+        /* =========================================================
            DESKTOP PFEILE
-        ========================= */
+        ========================================================= */
 
         .arrow {
             position: absolute;
@@ -136,9 +136,6 @@
             display: block;
         }
 
-
-        /* LINKER PFEIL */
-
         .arrow-left {
             left: -55px;
         }
@@ -151,9 +148,6 @@
             transform: translate(-5px, -50%);
         }
 
-
-        /* RECHTER PFEIL */
-
         .arrow-right {
             right: -55px;
         }
@@ -162,18 +156,15 @@
             transform: translate(5px, -50%);
         }
 
-
-        /* DEAKTIVIERT */
-
         .arrow.disabled {
             opacity: 0.15;
             pointer-events: none;
         }
 
 
-        /* =========================
+        /* =========================================================
            MOBILE
-        ========================= */
+        ========================================================= */
 
         @media (max-width: 800px) {
 
@@ -189,9 +180,9 @@
             }
 
 
-            /* =========================
+            /* =====================================================
                MOBILE VIEWPORT
-            ========================= */
+            ===================================================== */
 
             .mobile-viewport {
                 position: relative;
@@ -205,9 +196,9 @@
             }
 
 
-            /* =========================
+            /* =====================================================
                MOBILE TRACK
-            ========================= */
+            ===================================================== */
 
             .mobile-track {
                 position: absolute;
@@ -227,9 +218,12 @@
             }
 
 
-            /* =========================
-               MOBILE SEITE
-            ========================= */
+            /* =====================================================
+               MOBILE SEITE / FENSTER
+               
+               WICHTIG:
+               overflow:hidden verhindert das doppelte Bild.
+            ===================================================== */
 
             .mobile-page {
                 position: relative;
@@ -237,17 +231,29 @@
                 width: 100vw;
                 height: 100%;
 
-                flex-shrink: 0;
+                flex: 0 0 100vw;
 
-                overflow: visible;
+                overflow: hidden;
 
-                background: transparent;
+                background: #ffffff;
+
+                /*
+                 * Seitenschatten
+                 */
+                box-shadow:
+                    0 12px 35px rgba(0, 0, 0, 0.20);
             }
 
 
-            /* =========================
+            /* =====================================================
                A4 BILD
-            ========================= */
+
+               176vw bedeutet:
+               Eine komplette A4-Seite ist 176vw breit.
+
+               Dadurch sehen wir ungefähr 57 % der Seite,
+               also etwas mehr als die Hälfte.
+            ===================================================== */
 
             .mobile-page img {
                 position: absolute;
@@ -267,87 +273,86 @@
                 -webkit-user-drag: none;
 
                 pointer-events: none;
-
-                filter:
-                    drop-shadow(
-                        0 10px 22px
-                        rgba(0, 0, 0, 0.24)
-                    );
             }
 
 
-            /* =========================
-               LINKE HÄLFTE
-            ========================= */
+            /* =====================================================
+               LINKE SEITE
+
+               Zeigt den linken Bereich des A4-Blattes.
+            ===================================================== */
 
             .mobile-page.left img {
-                left: 6vw;
+                left: 0;
             }
 
 
-            /* =========================
-               RECHTE HÄLFTE
-            ========================= */
+            /* =====================================================
+               RECHTE SEITE
+
+               Zeigt den rechten Bereich desselben A4-Blattes.
+            ===================================================== */
 
             .mobile-page.right img {
-                left: -82vw;
+                left: -76vw;
             }
 
 
-            /* =========================
-               LEICHTE BUCHFALZ
-            ========================= */
+            /* =====================================================
+               BUCHFALZ / SEITENKANTE
+            ===================================================== */
 
-            .mobile-page.left::after {
-                content: "";
-
-                position: absolute;
-
-                top: 0;
-                left: 94vw;
-
-                width: 6px;
-                height: 100%;
-
-                pointer-events: none;
-
-                background:
-                    linear-gradient(
-                        to right,
-                        rgba(0, 0, 0, 0),
-                        rgba(0, 0, 0, 0.10)
-                    );
-            }
-
+            .mobile-page.left::after,
             .mobile-page.right::after {
                 content: "";
 
                 position: absolute;
 
                 top: 0;
-                left: 0;
+                bottom: 0;
 
-                width: 6px;
-                height: 100%;
+                width: 5px;
 
                 pointer-events: none;
+
+                z-index: 5;
+            }
+
+
+            .mobile-page.left::after {
+                right: 0;
 
                 background:
                     linear-gradient(
                         to left,
-                        rgba(0, 0, 0, 0),
-                        rgba(0, 0, 0, 0.10)
+                        rgba(0, 0, 0, 0.12),
+                        rgba(0, 0, 0, 0.03),
+                        transparent
                     );
             }
 
 
-            /* =========================
+            .mobile-page.right::after {
+                left: 0;
+
+                background:
+                    linear-gradient(
+                        to right,
+                        rgba(0, 0, 0, 0.12),
+                        rgba(0, 0, 0, 0.03),
+                        transparent
+                    );
+            }
+
+
+            /* =====================================================
                DESKTOP AUSBLENDEN
-            ========================= */
+            ===================================================== */
 
             .sheet {
                 display: none;
             }
+
         }
 
     </style>
@@ -359,9 +364,9 @@
     <main class="portfolio">
 
 
-        <!-- =========================
+        <!-- =====================================================
              DESKTOP
-        ========================= -->
+        ===================================================== -->
 
         <div class="sheet">
 
@@ -439,9 +444,9 @@
         </div>
 
 
-        <!-- =========================
+        <!-- =====================================================
              MOBILE
-        ========================= -->
+        ===================================================== -->
 
         <div
             class="mobile-viewport"
@@ -460,9 +465,9 @@
 
     <script>
 
-        /* =========================
+        /* =========================================================
            ELEMENTE
-        ========================= */
+        ========================================================= */
 
         const image =
             document.getElementById(
@@ -490,17 +495,17 @@
             );
 
 
-        /* =========================
-           ORDNER
-        ========================= */
+        /* =========================================================
+           BILDORDNER
+        ========================================================= */
 
         const IMAGE_FOLDER =
             "images/portfolio";
 
 
-        /* =========================
+        /* =========================================================
            VARIABLEN
-        ========================= */
+        ========================================================= */
 
         let currentPage = 1;
         let maxPage = 0;
@@ -518,9 +523,9 @@
         let mobilePosition = 0;
 
 
-        /* =========================
-           BILD EXISTIERT?
-        ========================= */
+        /* =========================================================
+           PRÜFEN OB BILD EXISTIERT
+        ========================================================= */
 
         function checkImage(number) {
 
@@ -543,9 +548,9 @@
         }
 
 
-        /* =========================
-           ALLE PNGs FINDEN
-        ========================= */
+        /* =========================================================
+           ALLE BILDER FINDEN
+        ========================================================= */
 
         async function findImages() {
 
@@ -569,9 +574,7 @@
 
 
             if (maxPage === 0) {
-
                 updateButtons();
-
                 return;
             }
 
@@ -588,9 +591,9 @@
         }
 
 
-        /* =========================
+        /* =========================================================
            DESKTOP BILD
-        ========================= */
+        ========================================================= */
 
         function showImage(number) {
 
@@ -615,9 +618,9 @@
         }
 
 
-        /* =========================
+        /* =========================================================
            DESKTOP PFEILE
-        ========================= */
+        ========================================================= */
 
         function updateButtons() {
 
@@ -669,9 +672,9 @@
         }
 
 
-        /* =========================
+        /* =========================================================
            DESKTOP ZURÜCK
-        ========================= */
+        ========================================================= */
 
         prevButton.addEventListener(
             "click",
@@ -691,9 +694,9 @@
         );
 
 
-        /* =========================
+        /* =========================================================
            DESKTOP WEITER
-        ========================= */
+        ========================================================= */
 
         nextButton.addEventListener(
             "click",
@@ -713,9 +716,9 @@
         );
 
 
-        /* =========================
+        /* =========================================================
            MOBILE SEITEN ERSTELLEN
-        ========================= */
+        ========================================================= */
 
         function createMobilePages() {
 
@@ -729,9 +732,9 @@
             ) {
 
 
-                /* =========================
-                   LINKE HÄLFTE
-                ========================= */
+                /* =============================================
+                   LINKE POSITION
+                ============================================= */
 
                 const left =
                     document.createElement(
@@ -744,7 +747,7 @@
                 left.innerHTML = `
                     <img
                         src="${IMAGE_FOLDER}/${page}.png"
-                        alt="Portfolio Seite ${page} links"
+                        alt="Portfolio Seite ${page}"
                         draggable="false"
                     >
                 `;
@@ -754,9 +757,9 @@
                 );
 
 
-                /* =========================
-                   RECHTE HÄLFTE
-                ========================= */
+                /* =============================================
+                   RECHTE POSITION
+                ============================================= */
 
                 const right =
                     document.createElement(
@@ -769,7 +772,7 @@
                 right.innerHTML = `
                     <img
                         src="${IMAGE_FOLDER}/${page}.png"
-                        alt="Portfolio Seite ${page} rechts"
+                        alt="Portfolio Seite ${page}"
                         draggable="false"
                     >
                 `;
@@ -783,46 +786,45 @@
 
             mobilePosition = 0;
 
-            updateMobilePosition(
-                false
-            );
+            updateMobilePosition(false);
 
         }
 
 
-        /* =========================
-           MOBILE POSITION
-        ========================= */
+        /* =========================================================
+           MOBILE POSITION AKTUALISIEREN
+        ========================================================= */
 
         function updateMobilePosition(
             animate = true
         ) {
 
-            if (!animate) {
+            if (animate) {
 
                 mobileTrack.style.transition =
-                    "none";
+                    "transform 0.40s cubic-bezier(0.22, 0.61, 0.36, 1)";
 
             } else {
 
                 mobileTrack.style.transition =
-                    "transform 0.38s cubic-bezier(0.22, 0.61, 0.36, 1)";
+                    "none";
 
             }
 
 
             mobileTrack.style.transform =
-                `translate(
+                `translate3d(
                     ${-mobilePosition * 100}vw,
-                    -50%
+                    -50%,
+                    0
                 )`;
 
         }
 
 
-        /* =========================
-           MOBILE SWIPE
-        ========================= */
+        /* =========================================================
+           SWIPE
+        ========================================================= */
 
         let touchStartX = 0;
         let touchCurrentX = 0;
@@ -877,10 +879,12 @@
                     -mobilePosition *
                     window.innerWidth;
 
+
                 mobileTrack.style.transform =
-                    `translate(
+                    `translate3d(
                         ${basePosition + delta}px,
-                        -50%
+                        -50%,
+                        0
                     )`;
 
             },
@@ -900,6 +904,7 @@
 
                 isDragging = false;
 
+
                 const delta =
                     touchCurrentX -
                     touchStartX;
@@ -912,9 +917,7 @@
                     );
 
 
-                /* =========================
-                   NACH LINKS
-                ========================= */
+                /* SWIPE NACH LINKS */
 
                 if (
                     delta < -threshold &&
@@ -927,9 +930,7 @@
                 }
 
 
-                /* =========================
-                   NACH RECHTS
-                ========================= */
+                /* SWIPE NACH RECHTS */
 
                 else if (
                     delta > threshold &&
@@ -941,17 +942,15 @@
                 }
 
 
-                updateMobilePosition(
-                    true
-                );
+                updateMobilePosition(true);
 
             }
         );
 
 
-        /* =========================
-           TOUCH ABBRUCH
-        ========================= */
+        /* =========================================================
+           TOUCH ABGEBROCHEN
+        ========================================================= */
 
         mobileViewport.addEventListener(
             "touchcancel",
@@ -963,17 +962,15 @@
 
                 isDragging = false;
 
-                updateMobilePosition(
-                    true
-                );
+                updateMobilePosition(true);
 
             }
         );
 
 
-        /* =========================
+        /* =========================================================
            DESKTOP TASTATUR
-        ========================= */
+        ========================================================= */
 
         document.addEventListener(
             "keydown",
@@ -1006,9 +1003,9 @@
         );
 
 
-        /* =========================
-           FENSTERGRÖSSE
-        ========================= */
+        /* =========================================================
+           RESIZE
+        ========================================================= */
 
         window.addEventListener(
             "resize",
@@ -1018,9 +1015,7 @@
                     window.innerWidth <= 800
                 ) {
 
-                    updateMobilePosition(
-                        false
-                    );
+                    updateMobilePosition(false);
 
                 }
 
@@ -1028,9 +1023,9 @@
         );
 
 
-        /* =========================
+        /* =========================================================
            START
-        ========================= */
+        ========================================================= */
 
         findImages();
 
