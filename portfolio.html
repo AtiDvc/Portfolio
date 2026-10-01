@@ -41,10 +41,6 @@
         }
 
 
-        /* =========================================================
-           DESKTOP A4
-        ========================================================= */
-
         .sheet {
             position: relative;
 
@@ -63,10 +59,6 @@
             overflow: visible;
         }
 
-
-        /* =========================================================
-           DESKTOP BILD
-        ========================================================= */
 
         #portfolioImage {
             width: 100%;
@@ -171,20 +163,20 @@
                 width: 100vw;
                 height: 100svh;
 
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
                 overflow: hidden;
+
+                display: block;
             }
 
 
             /* =====================================================
-               MOBILE VIEWPORT
+               SICHTBARER BEREICH
             ===================================================== */
 
             .mobile-viewport {
-                position: relative;
+                position: fixed;
+
+                inset: 0;
 
                 width: 100vw;
                 height: 100svh;
@@ -192,28 +184,30 @@
                 overflow: hidden;
 
                 touch-action: pan-y;
+
+                background: #ffffff;
             }
 
 
             /* =====================================================
-               MOBILE TRACK
+               MOBILE STAGE
+
+               Die Stage enthält immer nur die tatsächlich
+               vorhandenen A4-Seiten.
+
+               Jede Seite ist ein echtes A4-Blatt.
             ===================================================== */
 
-            .mobile-track {
+            .mobile-stage {
                 position: absolute;
 
                 top: 50%;
-                left: 4vw;
+                left: 0;
 
-                /*
-                 * A4 QUERFORMAT
-                 *
-                 * 150vw Breite
-                 * 106.06vw Höhe
-                 *
-                 * 150 × 210 / 297 = 106.06
-                 */
-                height: 106.06vw;
+                height: min(
+                    106.06vw,
+                    78svh
+                );
 
                 display: flex;
                 align-items: center;
@@ -223,50 +217,44 @@
 
 
             /* =====================================================
-               MOBILE SEITE
+               ECHTES A4-BLATT
+
+               297 / 210
+
+               Die Breite ergibt sich aus der Höhe.
             ===================================================== */
 
-            .mobile-page {
+            .mobile-sheet {
                 position: relative;
 
-                width: 92vw;
-                height: 106.06vw;
+                height: 100%;
 
-                flex: 0 0 92vw;
+                aspect-ratio: 297 / 210;
 
-                overflow: hidden;
+                flex: 0 0 auto;
 
                 background: #ffffff;
 
-                /*
-                 * Papier-/Buchschatten
-                 */
-                box-shadow:
-                    0 15px 40px rgba(0, 0, 0, 0.18);
+                overflow: hidden;
 
-                z-index: 1;
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.18);
             }
 
 
             /* =====================================================
-               A4 BILD
+               BILD
 
-               Das komplette A4-Blatt ist 150vw breit.
-
-               Das Fenster ist nur 92vw breit.
-
-               Dadurch sehen wir etwas mehr als die Hälfte.
+               Das Bild füllt das komplette A4-Blatt.
             ===================================================== */
 
-            .mobile-page img {
+            .mobile-sheet img {
                 position: absolute;
 
-                top: 0;
+                inset: 0;
 
-                width: 150vw;
-                height: 106.06vw;
-
-                max-width: none;
+                width: 100%;
+                height: 100%;
 
                 object-fit: contain;
 
@@ -280,35 +268,12 @@
 
 
             /* =====================================================
-               LINKE HÄLFTE
+               BUCHKANTE
 
-               Zeigt den linken Teil des A4-Blattes.
+               Eine dezente Kante auf der Innenseite.
             ===================================================== */
 
-            .mobile-page.left img {
-                left: 0;
-            }
-
-
-            /* =====================================================
-               RECHTE HÄLFTE
-
-               150vw - 92vw = 58vw
-
-               Deshalb wird das Bild um 58vw nach links
-               verschoben.
-            ===================================================== */
-
-            .mobile-page.right img {
-                left: -58vw;
-            }
-
-
-            /* =====================================================
-               SEITENKANTE / BUCHFALZ
-            ===================================================== */
-
-            .mobile-page::after {
+            .mobile-sheet::after {
                 content: "";
 
                 position: absolute;
@@ -316,35 +281,37 @@
                 top: 0;
                 bottom: 0;
 
-                width: 4px;
+                width: 12px;
 
                 pointer-events: none;
 
                 z-index: 5;
+
+                opacity: 0.8;
             }
 
 
-            .mobile-page.left::after {
+            .mobile-sheet:nth-child(odd)::after {
                 right: 0;
 
                 background:
                     linear-gradient(
                         to left,
-                        rgba(0, 0, 0, 0.12),
-                        rgba(0, 0, 0, 0.035),
+                        rgba(0, 0, 0, 0.10),
+                        rgba(0, 0, 0, 0.025),
                         transparent
                     );
             }
 
 
-            .mobile-page.right::after {
+            .mobile-sheet:nth-child(even)::after {
                 left: 0;
 
                 background:
                     linear-gradient(
                         to right,
-                        rgba(0, 0, 0, 0.12),
-                        rgba(0, 0, 0, 0.035),
+                        rgba(0, 0, 0, 0.10),
+                        rgba(0, 0, 0, 0.025),
                         transparent
                     );
             }
@@ -381,8 +348,6 @@
             >
 
 
-            <!-- LINKER PFEIL -->
-
             <button
                 id="prevButton"
                 class="arrow arrow-left disabled"
@@ -413,8 +378,6 @@
 
             </button>
 
-
-            <!-- RECHTER PFEIL -->
 
             <button
                 id="nextButton"
@@ -459,8 +422,8 @@
         >
 
             <div
-                class="mobile-track"
-                id="mobileTrack"
+                class="mobile-stage"
+                id="mobileStage"
             ></div>
 
         </div>
@@ -471,7 +434,7 @@
     <script>
 
         /* =========================================================
-           ELEMENTE
+           DESKTOP
         ========================================================= */
 
         const image =
@@ -489,39 +452,42 @@
                 "nextButton"
             );
 
-        const mobileTrack =
-            document.getElementById(
-                "mobileTrack"
-            );
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
 
         const mobileViewport =
             document.getElementById(
                 "mobileViewport"
             );
 
+        const mobileStage =
+            document.getElementById(
+                "mobileStage"
+            );
+
 
         /* =========================================================
-           BILDORDNER
+           BILDER
         ========================================================= */
 
         const IMAGE_FOLDER =
             "images/portfolio";
 
 
-        /* =========================================================
-           VARIABLEN
-        ========================================================= */
-
         let currentPage = 1;
         let maxPage = 0;
 
+
         /*
-         * MOBILE POSITION
+         * MOBILE:
          *
          * 0 = Seite 1 links
          * 1 = Seite 1 rechts
          * 2 = Seite 2 links
          * 3 = Seite 2 rechts
+         * 4 = Seite 3 links
          * usw.
          */
 
@@ -529,7 +495,7 @@
 
 
         /* =========================================================
-           BILD EXISTIERT?
+           BILD PRÜFEN
         ========================================================= */
 
         function checkImage(number) {
@@ -554,7 +520,7 @@
 
 
         /* =========================================================
-           ALLE BILDER FINDEN
+           BILDER FINDEN
         ========================================================= */
 
         async function findImages() {
@@ -579,25 +545,19 @@
 
 
             if (maxPage === 0) {
-                updateButtons();
                 return;
             }
 
 
-            /* DESKTOP */
-
             showImage(1);
 
-
-            /* MOBILE */
-
-            createMobilePages();
+            createMobileSheets();
 
         }
 
 
         /* =========================================================
-           DESKTOP BILD
+           DESKTOP
         ========================================================= */
 
         function showImage(number) {
@@ -623,25 +583,7 @@
         }
 
 
-        /* =========================================================
-           DESKTOP PFEILE
-        ========================================================= */
-
         function updateButtons() {
-
-            if (maxPage === 0) {
-
-                prevButton.classList.add(
-                    "disabled"
-                );
-
-                nextButton.classList.add(
-                    "disabled"
-                );
-
-                return;
-            }
-
 
             if (currentPage <= 1) {
 
@@ -658,9 +600,7 @@
             }
 
 
-            if (
-                currentPage >= maxPage
-            ) {
+            if (currentPage >= maxPage) {
 
                 nextButton.classList.add(
                     "disabled"
@@ -677,17 +617,11 @@
         }
 
 
-        /* =========================================================
-           DESKTOP ZURÜCK
-        ========================================================= */
-
         prevButton.addEventListener(
             "click",
             () => {
 
-                if (
-                    currentPage > 1
-                ) {
+                if (currentPage > 1) {
 
                     showImage(
                         currentPage - 1
@@ -699,17 +633,11 @@
         );
 
 
-        /* =========================================================
-           DESKTOP WEITER
-        ========================================================= */
-
         nextButton.addEventListener(
             "click",
             () => {
 
-                if (
-                    currentPage < maxPage
-                ) {
+                if (currentPage < maxPage) {
 
                     showImage(
                         currentPage + 1
@@ -722,12 +650,12 @@
 
 
         /* =========================================================
-           MOBILE SEITEN ERSTELLEN
+           MOBILE SEITEN
         ========================================================= */
 
-        function createMobilePages() {
+        function createMobileSheets() {
 
-            mobileTrack.innerHTML = "";
+            mobileStage.innerHTML = "";
 
 
             for (
@@ -736,54 +664,33 @@
                 page++
             ) {
 
-
-                /* =============================================
-                   LINKE POSITION
-                ============================================= */
-
-                const left =
+                const sheet =
                     document.createElement(
                         "div"
                     );
 
-                left.className =
-                    "mobile-page left";
-
-                left.innerHTML = `
-                    <img
-                        src="${IMAGE_FOLDER}/${page}.png"
-                        alt="Portfolio Seite ${page}"
-                        draggable="false"
-                    >
-                `;
-
-                mobileTrack.appendChild(
-                    left
-                );
+                sheet.className =
+                    "mobile-sheet";
 
 
-                /* =============================================
-                   RECHTE POSITION
-                ============================================= */
-
-                const right =
+                const img =
                     document.createElement(
-                        "div"
+                        "img"
                     );
 
-                right.className =
-                    "mobile-page right";
+                img.src =
+                    `${IMAGE_FOLDER}/${page}.png`;
 
-                right.innerHTML = `
-                    <img
-                        src="${IMAGE_FOLDER}/${page}.png"
-                        alt="Portfolio Seite ${page}"
-                        draggable="false"
-                    >
-                `;
+                img.alt =
+                    `Portfolio Seite ${page}`;
 
-                mobileTrack.appendChild(
-                    right
+                img.draggable = false;
+
+
+                sheet.appendChild(img);
+
+                mobileStage.appendChild(
+                    sheet
                 );
 
             }
@@ -798,51 +705,202 @@
 
         /* =========================================================
            MOBILE POSITION
+
+           Wichtig:
+
+           Wir verschieben NICHT einzelne Bilder.
+
+           Wir verschieben die komplette A4-Seite.
+
+           Dadurch kann niemals dieselbe PNG zweimal
+           gleichzeitig an derselben Stelle liegen.
         ========================================================= */
 
         function updateMobilePosition(
             animate = true
         ) {
 
-            const width =
+            const viewportWidth =
                 window.innerWidth;
 
-            /*
-             * Jede Position ist 92vw breit.
-             */
-
-            const step =
-                width * 0.92;
 
             /*
-             * Start mit 4vw Abstand links.
+             * Breite eines echten A4-Blattes.
+             *
+             * Die Höhe wird von CSS bestimmt.
              */
 
-            const start =
-                width * 0.04;
+            const stageHeight =
+                Math.min(
+                    viewportWidth * 1.0106,
+                    window.innerHeight * 0.78
+                );
 
+
+            const pageWidth =
+                stageHeight *
+                (297 / 210);
+
+
+            /*
+             * Wir zeigen bewusst etwas mehr als
+             * die Hälfte des A4-Blattes.
+             */
+
+            const visiblePart =
+                viewportWidth * 0.72;
+
+
+            /*
+             * Linker Rand beim ersten Zustand.
+             */
+
+            const firstOffset =
+                viewportWidth * 0.04;
+
+
+            /*
+             * Linker Ausschnitt:
+             * A4 beginnt etwas links.
+             */
+
+            const leftOffset =
+                firstOffset;
+
+
+            /*
+             * Rechter Ausschnitt:
+             * Wir schieben das A4-Blatt nach links,
+             * sodass sein rechter Bereich sichtbar wird.
+             */
+
+            const rightOffset =
+                viewportWidth -
+                pageWidth -
+                viewportWidth * 0.04;
+
+
+            /*
+             * Abstand zwischen den beiden Zuständen.
+             */
+
+            const stateStep =
+                viewportWidth * 0.92;
+
+
+            let x;
+
+
+            /*
+             * Position 0:
+             * Seite 1 links
+             */
+
+            if (mobilePosition === 0) {
+
+                x = leftOffset;
+
+            }
+
+
+            /*
+             * Position 1:
+             * Seite 1 rechts
+             */
+
+            else if (mobilePosition === 1) {
+
+                x =
+                    leftOffset -
+                    (
+                        pageWidth -
+                        visiblePart
+                    );
+
+            }
+
+
+            /*
+             * Danach:
+             *
+             * Seite 2 links
+             * Seite 2 rechts
+             * usw.
+             *
+             * Der Wechsel zwischen Seiten
+             * erfolgt über einen echten Abstand
+             * von einer kompletten A4-Seite.
+             */
+
+            else {
+
+                const pageIndex =
+                    Math.floor(
+                        mobilePosition / 2
+                    );
+
+                const side =
+                    mobilePosition % 2;
+
+
+                const base =
+                    pageIndex *
+                    pageWidth;
+
+
+                if (side === 0) {
+
+                    x =
+                        leftOffset -
+                        base +
+                        (
+                            pageIndex > 0
+                                ? viewportWidth
+                                : 0
+                        );
+
+                } else {
+
+                    x =
+                        leftOffset -
+                        base +
+                        (
+                            pageIndex > 0
+                                ? viewportWidth
+                                : 0
+                        ) -
+                        (
+                            pageWidth -
+                            visiblePart
+                        );
+
+                }
+
+            }
+
+
+            /*
+             * Für die eigentliche Darstellung
+             * verwenden wir eine exakt berechnete
+             * Transformposition.
+             */
 
             if (animate) {
 
-                mobileTrack.style.transition =
-                    "transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1)";
+                mobileStage.style.transition =
+                    "transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1)";
 
             } else {
 
-                mobileTrack.style.transition =
+                mobileStage.style.transition =
                     "none";
 
             }
 
 
-            const position =
-                start -
-                mobilePosition * step;
-
-
-            mobileTrack.style.transform =
+            mobileStage.style.transform =
                 `translate3d(
-                    ${position}px,
+                    ${x}px,
                     -50%,
                     0
                 )`;
@@ -878,7 +936,8 @@
                 touchCurrentX =
                     touchStartX;
 
-                mobileTrack.style.transition =
+
+                mobileStage.style.transition =
                     "none";
 
             },
@@ -899,29 +958,36 @@
                 touchCurrentX =
                     event.touches[0].clientX;
 
+
                 const delta =
                     touchCurrentX -
                     touchStartX;
 
 
-                const width =
-                    window.innerWidth;
+                /*
+                 * Während des Swipes bewegen wir
+                 * den gesamten Stage.
+                 */
 
-                const step =
-                    width * 0.92;
-
-                const start =
-                    width * 0.04;
-
-
-                const basePosition =
-                    start -
-                    mobilePosition * step;
+                const currentTransform =
+                    getComputedStyle(
+                        mobileStage
+                    ).transform;
 
 
-                mobileTrack.style.transform =
+                /*
+                 * Einfaches Follow-the-finger:
+                 *
+                 * Die tatsächliche Zielposition
+                 * wird beim Loslassen gesetzt.
+                 *
+                 * Dadurch bleibt die Bewegung
+                 * stabil und springt nicht.
+                 */
+
+                mobileStage.style.transform =
                     `translate3d(
-                        ${basePosition + delta}px,
+                        ${delta}px,
                         -50%,
                         0
                     )`;
@@ -960,9 +1026,9 @@
                     );
 
 
-                /* =============================================
-                   NACH LINKS
-                ============================================= */
+                /*
+                 * NACH LINKS
+                 */
 
                 if (
                     delta < -threshold &&
@@ -975,9 +1041,9 @@
                 }
 
 
-                /* =============================================
-                   NACH RECHTS
-                ============================================= */
+                /*
+                 * NACH RECHTS
+                 */
 
                 else if (
                     delta > threshold &&
@@ -996,7 +1062,7 @@
 
 
         /* =========================================================
-           TOUCH ABGEBROCHEN
+           TOUCH CANCEL
         ========================================================= */
 
         mobileViewport.addEventListener(
