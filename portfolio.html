@@ -7,6 +7,7 @@
     <title>Portfolio</title>
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -38,6 +39,11 @@
             align-items: center;
             justify-content: center;
         }
+
+
+        /* =========================
+           A4 QUERFORMAT
+        ========================= */
 
         .sheet {
             position: relative;
@@ -126,8 +132,12 @@
         .arrow svg {
             width: 18px;
             height: 32px;
+
             display: block;
         }
+
+
+        /* LINKER PFEIL */
 
         .arrow-left {
             left: -55px;
@@ -141,6 +151,9 @@
             transform: translate(-5px, -50%);
         }
 
+
+        /* RECHTER PFEIL */
+
         .arrow-right {
             right: -55px;
         }
@@ -148,6 +161,9 @@
         .arrow-right:hover {
             transform: translate(5px, -50%);
         }
+
+
+        /* DEAKTIVIERT */
 
         .arrow.disabled {
             opacity: 0.15;
@@ -212,27 +228,16 @@
 
 
             /* =========================
-               MOBILE ANSICHT
+               MOBILE SEITE
             ========================= */
 
             .mobile-page {
                 position: relative;
 
-                /*
-                 * Die aktuelle Ansicht ist etwas
-                 * kleiner als der Bildschirm.
-                 */
-                width: 88vw;
+                width: 100vw;
                 height: 100%;
 
-                margin-left: 6vw;
-                margin-right: 6vw;
-
                 flex-shrink: 0;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
 
                 overflow: visible;
 
@@ -248,12 +253,7 @@
                 position: absolute;
 
                 top: 50%;
-                left: 0;
 
-                /*
-                 * Das A4-Blatt ist doppelt so breit
-                 * wie die sichtbare Hälfte.
-                 */
                 width: 176vw;
                 height: auto;
 
@@ -268,9 +268,6 @@
 
                 pointer-events: none;
 
-                /*
-                 * Schatten direkt am PNG.
-                 */
                 filter:
                     drop-shadow(
                         0 10px 22px
@@ -284,7 +281,7 @@
             ========================= */
 
             .mobile-page.left img {
-                left: 0;
+                left: 6vw;
             }
 
 
@@ -293,7 +290,7 @@
             ========================= */
 
             .mobile-page.right img {
-                left: -88vw;
+                left: -82vw;
             }
 
 
@@ -307,9 +304,9 @@
                 position: absolute;
 
                 top: 0;
-                right: 0;
+                left: 94vw;
 
-                width: 14px;
+                width: 6px;
                 height: 100%;
 
                 pointer-events: none;
@@ -317,8 +314,7 @@
                 background:
                     linear-gradient(
                         to right,
-                        rgba(0, 0, 0, 0.00),
-                        rgba(0, 0, 0, 0.035),
+                        rgba(0, 0, 0, 0),
                         rgba(0, 0, 0, 0.10)
                     );
             }
@@ -331,7 +327,7 @@
                 top: 0;
                 left: 0;
 
-                width: 14px;
+                width: 6px;
                 height: 100%;
 
                 pointer-events: none;
@@ -339,8 +335,7 @@
                 background:
                     linear-gradient(
                         to left,
-                        rgba(0, 0, 0, 0.00),
-                        rgba(0, 0, 0, 0.035),
+                        rgba(0, 0, 0, 0),
                         rgba(0, 0, 0, 0.10)
                     );
             }
@@ -354,6 +349,7 @@
                 display: none;
             }
         }
+
     </style>
 </head>
 
@@ -361,6 +357,7 @@
 <body>
 
     <main class="portfolio">
+
 
         <!-- =========================
              DESKTOP
@@ -373,15 +370,20 @@
                 alt="Portfolio"
             >
 
+
+            <!-- LINKER PFEIL -->
+
             <button
                 id="prevButton"
                 class="arrow arrow-left disabled"
                 aria-label="Vorherige Seite"
             >
+
                 <svg
                     viewBox="0 0 462.45 818.53"
                     xmlns="http://www.w3.org/2000/svg"
                 >
+
                     <polygon
                         fill="#1d1d1b"
                         points="
@@ -396,18 +398,25 @@
                             462.3 409.25
                         "
                     />
+
                 </svg>
+
             </button>
+
+
+            <!-- RECHTER PFEIL -->
 
             <button
                 id="nextButton"
                 class="arrow arrow-right disabled"
                 aria-label="Nächste Seite"
             >
+
                 <svg
                     viewBox="0 0 462.45 818.53"
                     xmlns="http://www.w3.org/2000/svg"
                 >
+
                     <polygon
                         fill="#1d1d1b"
                         points="
@@ -422,7 +431,9 @@
                             462.3 409.25
                         "
                     />
+
                 </svg>
+
             </button>
 
         </div>
@@ -495,7 +506,7 @@
         let maxPage = 0;
 
         /*
-         * Mobile:
+         * MOBILE POSITION
          *
          * 0 = Seite 1 links
          * 1 = Seite 1 rechts
@@ -565,7 +576,12 @@
             }
 
 
+            /* DESKTOP */
+
             showImage(1);
+
+
+            /* MOBILE */
 
             createMobilePages();
 
@@ -705,13 +721,17 @@
 
             mobileTrack.innerHTML = "";
 
+
             for (
                 let page = 1;
                 page <= maxPage;
                 page++
             ) {
 
-                /* Linke Hälfte */
+
+                /* =========================
+                   LINKE HÄLFTE
+                ========================= */
 
                 const left =
                     document.createElement(
@@ -724,7 +744,7 @@
                 left.innerHTML = `
                     <img
                         src="${IMAGE_FOLDER}/${page}.png"
-                        alt="Portfolio Seite ${page}"
+                        alt="Portfolio Seite ${page} links"
                         draggable="false"
                     >
                 `;
@@ -734,7 +754,9 @@
                 );
 
 
-                /* Rechte Hälfte */
+                /* =========================
+                   RECHTE HÄLFTE
+                ========================= */
 
                 const right =
                     document.createElement(
@@ -747,7 +769,7 @@
                 right.innerHTML = `
                     <img
                         src="${IMAGE_FOLDER}/${page}.png"
-                        alt="Portfolio Seite ${page}"
+                        alt="Portfolio Seite ${page} rechts"
                         draggable="false"
                     >
                 `;
@@ -776,16 +798,6 @@
             animate = true
         ) {
 
-            /*
-             * Jede Ansicht ist 100vw voneinander
-             * entfernt. Dadurch bleibt der kleine
-             * Rand links/rechts sichtbar.
-             */
-
-            const position =
-                mobilePosition *
-                100;
-
             if (!animate) {
 
                 mobileTrack.style.transition =
@@ -801,7 +813,7 @@
 
             mobileTrack.style.transform =
                 `translate(
-                    ${-position}vw,
+                    ${-mobilePosition * 100}vw,
                     -50%
                 )`;
 
@@ -861,13 +873,13 @@
                     touchCurrentX -
                     touchStartX;
 
-                const base =
+                const basePosition =
                     -mobilePosition *
                     window.innerWidth;
 
                 mobileTrack.style.transform =
                     `translate(
-                        ${base + delta}px,
+                        ${basePosition + delta}px,
                         -50%
                     )`;
 
@@ -892,6 +904,7 @@
                     touchCurrentX -
                     touchStartX;
 
+
                 const threshold =
                     Math.min(
                         70,
@@ -899,7 +912,9 @@
                     );
 
 
-                /* Swipe nach links */
+                /* =========================
+                   NACH LINKS
+                ========================= */
 
                 if (
                     delta < -threshold &&
@@ -912,7 +927,9 @@
                 }
 
 
-                /* Swipe nach rechts */
+                /* =========================
+                   NACH RECHTS
+                ========================= */
 
                 else if (
                     delta > threshold &&
