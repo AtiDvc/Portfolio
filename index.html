@@ -79,25 +79,28 @@
 
         /* MOBILE */
 
-        @media (max-width: 700px) {
+        @media (max-width: 600px) {
+    .home {
+        min-height: 100svh;
+        padding: 20px 18px;
+    }
 
-            .home {
-                flex-direction: column;
-                gap: 25px;
-                padding: 20px;
-            }
+    .cover {
+        width: min(82vw, 420px);
+        height: auto;
+        max-width: none;
+    }
 
-            .cover {
-                height: 78vh;
-                max-width: 90vw;
-            }
+    .next {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+    }
 
-            .next {
-                width: 52px;
-                height: 52px;
-                font-size: 23px;
-            }
-        }
+    .next svg {
+        width: 18px;
+    }
+}
     </style>
 </head>
 
