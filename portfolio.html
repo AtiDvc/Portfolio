@@ -1,1055 +1,1084 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
 
-    <title>Portfolio</title>
+```
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<title>Portfolio</title>
 
-        html,
-        body {
-            margin: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            overflow: hidden;
-        }
+<style>
+    * {
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
+    html,
+    body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #ffffff;
+        overflow: hidden;
+    }
 
-        /* =========================================================
-           DESKTOP
-        ========================================================= */
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+    /* =========================================================
+       DESKTOP
+    ========================================================= */
+
+    .desktop-portfolio {
+        width: 100%;
+        height: 100svh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: relative;
+    }
+
+    .desktop-sheet {
+        width: min(84vw, 1200px);
+        aspect-ratio: 297 / 210;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: relative;
+    }
+
+    .desktop-sheet img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: contain;
+        display: block;
+
+        box-shadow:
+            0 12px 35px rgba(0, 0, 0, 0.16);
+    }
+
+    .desktop-arrow {
+        position: absolute;
+
+        top: 50%;
+        transform: translateY(-50%);
+
+        width: 64px;
+        height: 64px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0;
+        margin: 0;
+
+        border: none;
+        background: transparent;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.2s ease,
+            opacity 0.2s ease;
+    }
+
+    .desktop-arrow svg {
+        width: 18px;
+        height: auto;
+        display: block;
+    }
+
+    .desktop-arrow.left {
+        left: 3vw;
+    }
+
+    .desktop-arrow.right {
+        right: 3vw;
+    }
+
+    .desktop-arrow.left:hover {
+        transform: translateY(-50%) translateX(-7px);
+    }
+
+    .desktop-arrow.right:hover {
+        transform: translateY(-50%) translateX(7px);
+    }
+
+    .desktop-arrow:disabled {
+        opacity: 0.12;
+        cursor: default;
+    }
+
+    .desktop-arrow:disabled:hover {
+        transform: translateY(-50%);
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    .mobile-portfolio {
+        display: none;
+
+        width: 100%;
+        height: 100svh;
+
+        position: relative;
+
+        overflow: hidden;
+
+        touch-action: pan-y;
+        overscroll-behavior: none;
+    }
+
+    .mobile-viewport {
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        overflow: hidden;
+    }
+
+
+    /*
+        Alle PNGs liegen genau EINMAL hintereinander.
+
+        Zwischen jeder PNG:
+        24px Abstand.
+    */
+
+    .mobile-track {
+        position: absolute;
+
+        left: 0;
+        top: 50%;
+
+        height: min(106.06vw, 78svh);
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        gap: 24px;
+
+        will-change: transform;
+
+        transform: translate3d(0, -50%, 0);
+
+        transition:
+            transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+
+    /*
+        Eine PNG = genau eine A4-Seite.
+    */
+
+    .mobile-sheet {
+        flex: 0 0 auto;
+
+        height: 100%;
+        width: auto;
+
+        aspect-ratio: 297 / 210;
+
+        position: relative;
+
+        display: block;
+    }
+
+    .mobile-sheet img {
+        width: 100%;
+        height: 100%;
+
+        display: block;
+
+        object-fit: fill;
+
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.18);
+    }
+
+
+    .mobile-portfolio::before,
+    .mobile-portfolio::after {
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        bottom: 0;
+
+        width: 4vw;
+
+        z-index: 10;
+
+        pointer-events: none;
+    }
+
+    .mobile-portfolio::before {
+        left: 0;
+    }
+
+    .mobile-portfolio::after {
+        right: 0;
+    }
+
+
+    /* =========================================================
+       MOBILE BREAKPOINT
+    ========================================================= */
+
+    @media (max-width: 700px) {
 
         .desktop-portfolio {
-            width: 100%;
-            height: 100svh;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            position: relative;
+            display: none;
         }
-
-        .desktop-sheet {
-            width: min(84vw, 1200px);
-            aspect-ratio: 297 / 210;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            position: relative;
-        }
-
-        .desktop-sheet img {
-            width: 100%;
-            height: 100%;
-
-            object-fit: contain;
-            display: block;
-
-            box-shadow:
-                0 12px 35px rgba(0, 0, 0, 0.16);
-        }
-
-        .desktop-arrow {
-            position: absolute;
-
-            top: 50%;
-            transform: translateY(-50%);
-
-            width: 64px;
-            height: 64px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            padding: 0;
-            margin: 0;
-
-            border: none;
-            background: transparent;
-
-            cursor: pointer;
-
-            transition:
-                transform 0.2s ease,
-                opacity 0.2s ease;
-        }
-
-        .desktop-arrow svg {
-            width: 18px;
-            height: auto;
-            display: block;
-        }
-
-        .desktop-arrow.left {
-            left: 3vw;
-        }
-
-        .desktop-arrow.right {
-            right: 3vw;
-        }
-
-        .desktop-arrow.left:hover {
-            transform: translateY(-50%) translateX(-7px);
-        }
-
-        .desktop-arrow.right:hover {
-            transform: translateY(-50%) translateX(7px);
-        }
-
-        .desktop-arrow:disabled {
-            opacity: 0.12;
-            cursor: default;
-        }
-
-        .desktop-arrow:disabled:hover {
-            transform: translateY(-50%);
-        }
-
-
-        /* =========================================================
-           MOBILE
-        ========================================================= */
 
         .mobile-portfolio {
-            display: none;
-
-            width: 100%;
-            height: 100svh;
-
-            position: relative;
-
-            overflow: hidden;
-
-            touch-action: pan-y;
-            overscroll-behavior: none;
-        }
-
-        /*
-            Das ist das sichtbare Fenster.
-
-            Die A4-Seite ist absichtlich größer als das Fenster:
-            ca. 150vw breit.
-
-            Dadurch sieht man etwas mehr als die Hälfte der
-            Landschaftsseite.
-        */
-        .mobile-viewport {
-            position: absolute;
-
-            inset: 0;
-
-            width: 100%;
-            height: 100%;
-
-            overflow: hidden;
-        }
-
-        /*
-            Alle Seiten liegen EINMAL hintereinander.
-        */
-        .mobile-track {
-    position: absolute;
-
-    left: 0;
-    top: 50%;
-
-    height: min(106.06vw, 78svh);
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    gap: 24px;
-
-    will-change: transform;
-
-    transform: translate3d(0, -50%, 0);
-
-    transition:
-        transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-        /*
-            Eine PNG = genau eine Seite.
-
-            KEINE zweite Kopie derselben PNG.
-        */
-        .mobile-sheet {
-            flex: 0 0 auto;
-
-            height: 100%;
-            width: auto;
-
-            aspect-ratio: 297 / 210;
-
-            position: relative;
-
             display: block;
         }
+    }
+</style>
+```
 
-        .mobile-sheet img {
-            width: 100%;
-            height: 100%;
-
-            display: block;
-
-            object-fit: fill;
-
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.18);
-        }
-
-        /*
-            Kleine unsichtbare Bereiche am Rand,
-            damit die Seite nicht direkt am Display klebt.
-        */
-        .mobile-portfolio::before,
-        .mobile-portfolio::after {
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            bottom: 0;
-
-            width: 4vw;
-
-            z-index: 10;
-
-            pointer-events: none;
-        }
-
-        .mobile-portfolio::before {
-            left: 0;
-        }
-
-        .mobile-portfolio::after {
-            right: 0;
-        }
-
-
-        /* =========================================================
-           MOBILE
-        ========================================================= */
-
-        @media (max-width: 700px) {
-
-            .desktop-portfolio {
-                display: none;
-            }
-
-            .mobile-portfolio {
-                display: block;
-            }
-        }
-    </style>
 </head>
-
 
 <body>
 
-    <!-- =========================================================
-         DESKTOP
-    ========================================================== -->
+```
+<!-- =========================================================
+     DESKTOP
+========================================================= -->
 
-    <main class="desktop-portfolio">
+<main class="desktop-portfolio">
 
-        <button
-            class="desktop-arrow left"
-            id="desktopPrev"
-            aria-label="Vorherige Seite"
-            disabled
+    <button
+        class="desktop-arrow left"
+        id="desktopPrev"
+        aria-label="Vorherige Seite"
+        disabled
+    >
+        <svg
+            viewBox="0 0 462.45 818.53"
+            xmlns="http://www.w3.org/2000/svg"
         >
-            <svg
-                viewBox="0 0 462.45 818.53"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <polygon
-                    fill="#1d1d1b"
-                    points="
-                        462.3 409.25
-                        462.41 409.14
-                        53.27 0
-                        0 53.27
-                        356.01 409.28
-                        .04 765.26
-                        53.31 818.53
-                        462.45 409.39
-                        462.3 409.25
-                    "
-                />
-            </svg>
-        </button>
+            <polygon
+                fill="#1d1d1b"
+                points="
+                    462.3 409.25
+                    462.41 409.14
+                    53.27 0
+                    0 53.27
+                    356.01 409.28
+                    .04 765.26
+                    53.31 818.53
+                    462.45 409.39
+                    462.3 409.25
+                "
+            />
+        </svg>
+    </button>
 
 
-        <div class="desktop-sheet">
-            <img
-                id="desktopImage"
-                src=""
-                alt="Portfolio Seite"
-            >
-        </div>
+    <div class="desktop-sheet">
 
-
-        <button
-            class="desktop-arrow right"
-            id="desktopNext"
-            aria-label="Nächste Seite"
+        <img
+            id="desktopImage"
+            src=""
+            alt="Portfolio Seite"
         >
-            <svg
-                viewBox="0 0 462.45 818.53"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <polygon
-                    fill="#1d1d1b"
-                    points="
-                        462.3 409.25
-                        462.41 409.14
-                        53.27 0
-                        0 53.27
-                        356.01 409.28
-                        .04 765.26
-                        53.31 818.53
-                        462.45 409.39
-                        462.3 409.25
-                    "
-                />
-            </svg>
-        </button>
 
-    </main>
+    </div>
 
 
-    <!-- =========================================================
-         MOBILE
-    ========================================================== -->
+    <button
+        class="desktop-arrow right"
+        id="desktopNext"
+        aria-label="Nächste Seite"
+    >
+        <svg
+            viewBox="0 0 462.45 818.53"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <polygon
+                fill="#1d1d1b"
+                points="
+                    462.3 409.25
+                    462.41 409.14
+                    53.27 0
+                    0 53.27
+                    356.01 409.28
+                    .04 765.26
+                    53.31 818.53
+                    462.45 409.39
+                    462.3 409.25
+                "
+            />
+        </svg>
+    </button>
 
-    <main
-        class="mobile-portfolio"
-        id="mobilePortfolio"
+</main>
+
+
+<!-- =========================================================
+     MOBILE
+========================================================= -->
+
+<main
+    class="mobile-portfolio"
+    id="mobilePortfolio"
+>
+
+    <div
+        class="mobile-viewport"
+        id="mobileViewport"
     >
 
         <div
-            class="mobile-viewport"
-            id="mobileViewport"
-        >
+            class="mobile-track"
+            id="mobileTrack"
+        ></div>
 
-            <div
-                class="mobile-track"
-                id="mobileTrack"
-            ></div>
+    </div>
 
-        </div>
-
-    </main>
+</main>
 
 
-    <script>
-
-        /* =========================================================
-           EINSTELLUNGEN
-        ========================================================= */
-
-        const IMAGE_FOLDER = "images/portfolio";
+<script>
 
 
-        /* =========================================================
-           ELEMENTE
-        ========================================================= */
+    /* =========================================================
+       EINSTELLUNGEN
+    ========================================================= */
 
-        const desktopImage =
-            document.getElementById("desktopImage");
+    const IMAGE_FOLDER = "images/portfolio";
 
-        const desktopPrev =
-            document.getElementById("desktopPrev");
-
-        const desktopNext =
-            document.getElementById("desktopNext");
-
-        const mobileTrack =
-            document.getElementById("mobileTrack");
-
-        const mobileViewport =
-            document.getElementById("mobileViewport");
+    const PAGE_GAP = 24;
 
 
-        /* =========================================================
-           SEITEN ERMITTELN
-           
-           1.png
-           2.png
-           3.png
-           ...
-           
-           Sobald eine Nummer fehlt, wird gestoppt.
-        ========================================================= */
+    /* =========================================================
+       ELEMENTE
+    ========================================================= */
 
-        async function findPages() {
+    const desktopImage =
+        document.getElementById("desktopImage");
 
-            const pages = [];
+    const desktopPrev =
+        document.getElementById("desktopPrev");
 
-            for (let number = 1; number <= 100; number++) {
+    const desktopNext =
+        document.getElementById("desktopNext");
 
-                const src =
-                    `${IMAGE_FOLDER}/${number}.png`;
+    const mobileTrack =
+        document.getElementById("mobileTrack");
 
-                const exists = await imageExists(src);
+    const mobileViewport =
+        document.getElementById("mobileViewport");
 
-                if (!exists) {
-                    break;
-                }
 
-                pages.push(src);
+    /* =========================================================
+       SEITEN ERMITTELN
+    ========================================================= */
+
+    async function findPages() {
+
+        const pages = [];
+
+        for (
+            let number = 1;
+            number <= 100;
+            number++
+        ) {
+
+            const src =
+                `${IMAGE_FOLDER}/${number}.png`;
+
+            const exists =
+                await imageExists(src);
+
+            if (!exists) {
+                break;
             }
 
-            return pages;
+            pages.push(src);
         }
 
+        return pages;
+    }
 
-        function imageExists(src) {
 
-            return new Promise(resolve => {
+    function imageExists(src) {
 
-                const image = new Image();
+        return new Promise(resolve => {
 
-                image.onload = () => {
-                    resolve(true);
-                };
+            const image =
+                new Image();
 
-                image.onerror = () => {
-                    resolve(false);
-                };
+            image.onload = () => {
+                resolve(true);
+            };
 
-                image.src = src;
-            });
+            image.onerror = () => {
+                resolve(false);
+            };
+
+            image.src = src;
+        });
+    }
+
+
+    /* =========================================================
+       DESKTOP
+    ========================================================= */
+
+    let desktopIndex = 0;
+
+    let pages = [];
+
+
+    function updateDesktop() {
+
+        if (!pages.length) {
+            return;
         }
 
+        desktopImage.src =
+            pages[desktopIndex];
 
-        /* =========================================================
-           DESKTOP
-        ========================================================= */
+        desktopImage.alt =
+            `Portfolio Seite ${desktopIndex + 1}`;
 
-        let desktopIndex = 0;
-        let pages = [];
+        desktopPrev.disabled =
+            desktopIndex === 0;
+
+        desktopNext.disabled =
+            desktopIndex === pages.length - 1;
+    }
 
 
-        function updateDesktop() {
+    desktopPrev.addEventListener(
+        "click",
+        () => {
 
-            if (!pages.length) {
-                return;
+            if (desktopIndex > 0) {
+
+                desktopIndex--;
+
+                updateDesktop();
             }
-
-            desktopImage.src =
-                pages[desktopIndex];
-
-            desktopImage.alt =
-                `Portfolio Seite ${desktopIndex + 1}`;
-
-            desktopPrev.disabled =
-                desktopIndex === 0;
-
-            desktopNext.disabled =
-                desktopIndex === pages.length - 1;
         }
-
-
-        desktopPrev.addEventListener(
-            "click",
-            () => {
-
-                if (desktopIndex > 0) {
-
-                    desktopIndex--;
-
-                    updateDesktop();
-                }
-            }
-        );
-
-
-        desktopNext.addEventListener(
-            "click",
-            () => {
-
-                if (
-                    desktopIndex <
-                    pages.length - 1
-                ) {
-
-                    desktopIndex++;
-
-                    updateDesktop();
-                }
-            }
-        );
-
-
-        document.addEventListener(
-            "keydown",
-            event => {
-
-                /*
-                    Nur Desktop-Tastatursteuerung.
-                */
-
-                if (
-                    window.innerWidth <= 700
-                ) {
-                    return;
-                }
-
-
-                if (
-                    event.key === "ArrowRight" &&
-                    desktopIndex < pages.length - 1
-                ) {
-
-                    desktopIndex++;
-
-                    updateDesktop();
-                }
-
-
-                if (
-                    event.key === "ArrowLeft" &&
-                    desktopIndex > 0
-                ) {
-
-                    desktopIndex--;
-
-                    updateDesktop();
-                }
-            }
-        );
-
-
-        /* =========================================================
-           MOBILE TRACK AUFBAUEN
-           
-           WICHTIG:
-           Jede PNG wird HIER GENAU EINMAL eingefügt.
-        ========================================================= */
-
-        function buildMobile() {
-
-            mobileTrack.innerHTML = "";
-
-
-            pages.forEach(
-                (src, index) => {
-
-                    const sheet =
-                        document.createElement("div");
-
-                    sheet.className =
-                        "mobile-sheet";
-
-
-                    const image =
-                        document.createElement("img");
-
-                    image.src = src;
-
-                    image.alt =
-                        `Portfolio Seite ${index + 1}`;
-
-
-                    sheet.appendChild(image);
-
-                    mobileTrack.appendChild(sheet);
-                }
-            );
-        }
-
-
-        /* =========================================================
-           MOBILE STATE
-           
-           Beispiel bei 8 Seiten:
-           
-           0 = Seite 1 links
-           1 = Seite 1 rechts
-           2 = Seite 2 links
-           3 = Seite 2 rechts
-           4 = Seite 3 links
-           ...
-           14 = Seite 8 links
-           15 = Seite 8 rechts
-           
-           MAXIMUM = 15
-           
-           Danach geht nichts mehr weiter.
-        ========================================================= */
-
-        let mobileState = 0;
-
-        let mobileCurrentX = 0;
-
-        let isDragging = false;
-
-        let touchStartX = 0;
-
-        let touchStartY = 0;
-
-        let touchStartTranslate = 0;
-
-
-        /* =========================================================
-           MOBILE POSITION BERECHNEN
-        ========================================================= */
-
-        function getMobileDimensions() {
-
-            const viewportWidth =
-                mobileViewport.clientWidth;
-
-
-            /*
-                A4 Verhältnis:
-                297 / 210 = 1.414285...
-            */
-
-            const pageHeight =
-    Math.min(
-        viewportWidth * 1.131313,
-        window.innerHeight * 0.78
     );
 
 
-            const pageWidth =
-                pageHeight * (297 / 210);
+    desktopNext.addEventListener(
+        "click",
+        () => {
+
+            if (
+                desktopIndex <
+                pages.length - 1
+            ) {
+
+                desktopIndex++;
+
+                updateDesktop();
+            }
+        }
+    );
 
 
-            return {
-                viewportWidth,
-                pageWidth,
-                pageHeight
-            };
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                window.innerWidth <= 700
+            ) {
+                return;
+            }
+
+
+            if (
+                event.key === "ArrowRight" &&
+                desktopIndex < pages.length - 1
+            ) {
+
+                desktopIndex++;
+
+                updateDesktop();
+            }
+
+
+            if (
+                event.key === "ArrowLeft" &&
+                desktopIndex > 0
+            ) {
+
+                desktopIndex--;
+
+                updateDesktop();
+            }
+        }
+    );
+
+
+    /* =========================================================
+       MOBILE TRACK AUFBAUEN
+       
+       Jede PNG wird GENAU EINMAL eingefügt.
+    ========================================================= */
+
+    function buildMobile() {
+
+        mobileTrack.innerHTML = "";
+
+
+        pages.forEach(
+            (src, index) => {
+
+                const sheet =
+                    document.createElement("div");
+
+                sheet.className =
+                    "mobile-sheet";
+
+
+                const image =
+                    document.createElement("img");
+
+                image.src = src;
+
+                image.alt =
+                    `Portfolio Seite ${index + 1}`;
+
+
+                sheet.appendChild(image);
+
+                mobileTrack.appendChild(sheet);
+            }
+        );
+    }
+
+
+    /* =========================================================
+       MOBILE STATE
+       
+       0  = Seite 1 links
+       1  = Seite 1 rechts
+       2  = Seite 2 links
+       3  = Seite 2 rechts
+       ...
+       
+       Kein Loop.
+    ========================================================= */
+
+    let mobileState = 0;
+
+    let mobileCurrentX = 0;
+
+    let isDragging = false;
+
+    let touchStartX = 0;
+
+    let touchStartY = 0;
+
+    let touchStartTranslate = 0;
+
+
+    /* =========================================================
+       MOBILE DIMENSIONEN
+       
+       155vw Seitenbreite.
+       
+       Dadurch etwas stärkerer Zoom als vorher.
+    ========================================================= */
+
+    function getMobileDimensions() {
+
+        const viewportWidth =
+            mobileViewport.clientWidth;
+
+
+        /*
+            155vw Seitenbreite:
+
+            pageWidth =
+                viewportWidth * 1.55
+        */
+
+        const pageHeight =
+            Math.min(
+                viewportWidth * 1.09596,
+                window.innerHeight * 0.78
+            );
+
+
+        const pageWidth =
+            pageHeight * (297 / 210);
+
+
+        return {
+            viewportWidth,
+            pageWidth,
+            pageHeight
+        };
+    }
+
+
+    /* =========================================================
+       MOBILE POSITION
+       
+       Hier wird die Position für jeden Zustand
+       exakt berechnet.
+    ========================================================= */
+
+    function getStateTranslate(state) {
+
+        const {
+            viewportWidth,
+            pageWidth
+        } = getMobileDimensions();
+
+
+        /*
+            Welche PNG?
+
+            0,1 = PNG 1
+            2,3 = PNG 2
+            4,5 = PNG 3
+            usw.
+        */
+
+        const pageIndex =
+            Math.floor(state / 2);
+
+
+        /*
+            false = linke Hälfte
+            true  = rechte Hälfte
+        */
+
+        const showingRight =
+            state % 2 === 1;
+
+
+        /*
+            Die tatsächliche Startposition
+            der PNG im Track.
+
+            Wichtig:
+            Hier wird der 24px Abstand
+            mitgerechnet.
+        */
+
+        const pageStart =
+            pageIndex *
+            (pageWidth + PAGE_GAP);
+
+
+        /*
+            Kleiner Rand zum Bildschirmrand.
+        */
+
+        const sideMargin =
+            viewportWidth * 0.04;
+
+
+        let targetPageX;
+
+
+        if (!showingRight) {
+
+            /*
+                =========================================
+                LINKER ZUSTAND
+                =========================================
+
+                Linke Kante der PNG liegt bei 4vw.
+            */
+
+            targetPageX =
+                sideMargin;
+
+        } else {
+
+            /*
+                =========================================
+                RECHTER ZUSTAND
+                =========================================
+
+                Die rechte Kante der PNG endet
+                bei 4vw Abstand zum Bildschirmrand.
+
+                WICHTIG:
+
+                Der Abstand zur nächsten PNG
+                bleibt vollständig außerhalb
+                des sichtbaren Bereichs.
+
+                Deshalb NICHT einfach nur:
+
+                viewportWidth - pageWidth
+
+                sondern mit PAGE_GAP.
+            */
+
+            targetPageX =
+                viewportWidth -
+                sideMargin -
+                pageWidth -
+                PAGE_GAP;
         }
 
 
         /*
-            Hier wird exakt bestimmt, wo die jeweilige Seite liegt.
-
-            LEFT:
-            Die linke Seite des A4-Blatts beginnt bei 4vw.
-
-            RIGHT:
-            Die rechte Seite des A4-Blatts endet bei 4vw.
-
-            Dadurch gibt es keine zufälligen Verschiebungen.
+            Track verschieben, sodass die
+            gewünschte PNG an targetPageX liegt.
         */
 
-        function getStateTranslate(state) {
-
-            const {
-                viewportWidth,
-                pageWidth
-            } = getMobileDimensions();
-
-
-            const pageIndex =
-    Math.floor(state / 2);
-
-const showingRight =
-    state % 2 === 1;
-
-const pageGap = 24;
-
-const pageStart =
-    pageIndex * (pageWidth + pageGap);
+        return (
+            targetPageX -
+            pageStart
+        );
+    }
 
 
-            const leftMargin =
-                viewportWidth * 0.04;
+    /* =========================================================
+       MOBILE POSITION SETZEN
+    ========================================================= */
 
+    function updateMobile(
+        animate = true
+    ) {
 
-            let targetPageX;
-
-
-            if (!showingRight) {
-
-                /*
-                    LINKER Ausschnitt
-                */
-
-                targetPageX =
-                    leftMargin;
-
-            } else {
-
-                /*
-                    RECHTER Ausschnitt
-
-                    Rechte Kante der Seite:
-                    96vw
-
-                    Also:
-                    96vw - pageWidth
-                */
-
-                targetPageX =
-                    viewportWidth -
-                    leftMargin -
-                    pageWidth;
-            }
-
-
-            /*
-                Track muss so verschoben werden,
-                dass die gewünschte Seite
-                an targetPageX liegt.
-            */
-
-            return targetPageX - pageStart;
+        if (!pages.length) {
+            return;
         }
 
 
-        /* =========================================================
-           MOBILE POSITION SETZEN
-        ========================================================= */
+        const targetX =
+            getStateTranslate(
+                mobileState
+            );
 
-        function updateMobile(
-            animate = true
-        ) {
 
-            if (!pages.length) {
+        mobileCurrentX =
+            targetX;
+
+
+        if (animate) {
+
+            mobileTrack.style.transition =
+                "transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1)";
+
+        } else {
+
+            mobileTrack.style.transition =
+                "none";
+        }
+
+
+        mobileTrack.style.transform =
+            `translate3d(${targetX}px, -50%, 0)`;
+    }
+
+
+    /* =========================================================
+       TOUCH START
+    ========================================================= */
+
+    mobileViewport.addEventListener(
+        "touchstart",
+        event => {
+
+            if (!event.touches.length) {
                 return;
             }
 
 
-            const targetX =
-                getStateTranslate(
-                    mobileState
-                );
+            isDragging = true;
 
 
-            mobileCurrentX =
-                targetX;
+            touchStartX =
+                event.touches[0].clientX;
 
 
-            if (animate) {
+            touchStartY =
+                event.touches[0].clientY;
 
-                mobileTrack.style.transition =
-                    "transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1)";
 
-            } else {
+            touchStartTranslate =
+                mobileCurrentX;
 
-                mobileTrack.style.transition =
-                    "none";
+
+            mobileTrack.style.transition =
+                "none";
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    /* =========================================================
+       TOUCH MOVE
+    ========================================================= */
+
+    mobileViewport.addEventListener(
+        "touchmove",
+        event => {
+
+            if (!isDragging) {
+                return;
             }
+
+
+            if (!event.touches.length) {
+                return;
+            }
+
+
+            const currentX =
+                event.touches[0].clientX;
+
+
+            const currentY =
+                event.touches[0].clientY;
+
+
+            const deltaX =
+                currentX -
+                touchStartX;
+
+
+            const deltaY =
+                currentY -
+                touchStartY;
+
+
+            /*
+                Nur horizontale Swipes.
+            */
+
+            if (
+                Math.abs(deltaY) >
+                Math.abs(deltaX)
+            ) {
+                return;
+            }
+
+
+            /*
+                Track von der tatsächlichen
+                Startposition aus bewegen.
+            */
+
+            const liveX =
+                touchStartTranslate +
+                deltaX;
 
 
             mobileTrack.style.transform =
-                `translate3d(${targetX}px, -50%, 0)`;
+                `translate3d(${liveX}px, -50%, 0)`;
+        },
+        {
+            passive: true
         }
+    );
 
 
-        /* =========================================================
-           TOUCH START
-        ========================================================= */
+    /* =========================================================
+       TOUCH END
+    ========================================================= */
 
-        mobileViewport.addEventListener(
-            "touchstart",
-            event => {
+    mobileViewport.addEventListener(
+        "touchend",
+        event => {
 
-                if (!event.touches.length) {
-                    return;
-                }
-
-
-                isDragging = true;
-
-
-                touchStartX =
-                    event.touches[0].clientX;
-
-
-                touchStartY =
-                    event.touches[0].clientY;
-
-
-                touchStartTranslate =
-                    mobileCurrentX;
-
-
-                mobileTrack.style.transition =
-                    "none";
-            },
-            {
-                passive: true
+            if (!isDragging) {
+                return;
             }
-        );
 
 
-        /* =========================================================
-           TOUCH MOVE
-        ========================================================= */
-
-        mobileViewport.addEventListener(
-            "touchmove",
-            event => {
-
-                if (!isDragging) {
-                    return;
-                }
+            isDragging = false;
 
 
-                if (!event.touches.length) {
-                    return;
-                }
+            const changedTouch =
+                event.changedTouches[0];
 
 
-                const currentX =
-                    event.touches[0].clientX;
-
-
-                const currentY =
-                    event.touches[0].clientY;
-
-
-                const deltaX =
-                    currentX - touchStartX;
-
-
-                const deltaY =
-                    currentY - touchStartY;
-
-
-                /*
-                    Wenn der Finger hauptsächlich
-                    vertikal bewegt wird, ignorieren wir
-                    die Bewegung.
-
-                    Dadurch bleibt normales Scroll-Verhalten
-                    erhalten, falls irgendwann Inhalt dazukommt.
-                */
-
-                if (
-                    Math.abs(deltaY) >
-                    Math.abs(deltaX)
-                ) {
-                    return;
-                }
-
-
-                /*
-                    Während des Swipes bewegen wir den
-                    Track von seiner AKTUELLEN Position aus.
-
-                    Nicht von 0.
-
-                    Das war einer der Fehler der vorherigen Version.
-                */
-
-                const liveX =
-                    touchStartTranslate +
-                    deltaX;
-
-
-                mobileTrack.style.transform =
-                    `translate3d(${liveX}px, -50%, 0)`;
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        /* =========================================================
-           TOUCH END
-        ========================================================= */
-
-        mobileViewport.addEventListener(
-            "touchend",
-            event => {
-
-                if (!isDragging) {
-                    return;
-                }
-
-
-                isDragging = false;
-
-
-                const changedTouch =
-                    event.changedTouches[0];
-
-
-                if (!changedTouch) {
-
-                    updateMobile(true);
-
-                    return;
-                }
-
-
-                const deltaX =
-                    changedTouch.clientX -
-                    touchStartX;
-
-
-                const swipeThreshold =
-                    Math.max(
-                        45,
-                        mobileViewport.clientWidth * 0.12
-                    );
-
-
-                /*
-                    Nach LINKS gewischt
-                    = nächste Ansicht
-                */
-
-                if (
-                    deltaX < -swipeThreshold
-                ) {
-
-                    if (
-                        mobileState <
-                        pages.length * 2 - 1
-                    ) {
-
-                        mobileState++;
-                    }
-
-                }
-
-
-                /*
-                    Nach RECHTS gewischt
-                    = vorherige Ansicht
-                */
-
-                else if (
-                    deltaX > swipeThreshold
-                ) {
-
-                    if (
-                        mobileState > 0
-                    ) {
-
-                        mobileState--;
-                    }
-                }
-
-
-                /*
-                    Egal ob gültiger Swipe oder nicht:
-                    immer exakt auf den nächsten
-                    definierten Zustand zurückspringen.
-                */
+            if (!changedTouch) {
 
                 updateMobile(true);
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        /* =========================================================
-           TOUCH CANCEL
-        ========================================================= */
-
-        mobileViewport.addEventListener(
-            "touchcancel",
-            () => {
-
-                isDragging = false;
-
-                updateMobile(true);
-            }
-        );
-
-
-        /* =========================================================
-           FENSTERGRÖSSE
-           
-           Bei Rotation / Resize Position neu berechnen.
-        ========================================================= */
-
-        let resizeTimer;
-
-
-        window.addEventListener(
-            "resize",
-            () => {
-
-                clearTimeout(resizeTimer);
-
-
-                resizeTimer =
-                    setTimeout(
-                        () => {
-
-                            updateMobile(false);
-
-                        },
-                        100
-                    );
-            }
-        );
-
-
-        /* =========================================================
-           START
-        ========================================================= */
-
-        async function init() {
-
-            pages =
-                await findPages();
-
-
-            if (!pages.length) {
-
-                console.error(
-                    "Keine Portfolio-Bilder gefunden."
-                );
 
                 return;
             }
 
 
+            const deltaX =
+                changedTouch.clientX -
+                touchStartX;
+
+
+            const swipeThreshold =
+                Math.max(
+                    45,
+                    mobileViewport.clientWidth * 0.12
+                );
+
+
             /*
-                Desktop
+                NACH LINKS
+                = nächster Zustand
             */
 
-            updateDesktop();
+            if (
+                deltaX < -swipeThreshold
+            ) {
+
+                const maxState =
+                    pages.length * 2 - 1;
+
+
+                if (
+                    mobileState <
+                    maxState
+                ) {
+
+                    mobileState++;
+                }
+            }
 
 
             /*
-                Mobile
+                NACH RECHTS
+                = vorheriger Zustand
             */
 
-            buildMobile();
+            else if (
+                deltaX > swipeThreshold
+            ) {
 
-            mobileState = 0;
+                if (
+                    mobileState > 0
+                ) {
 
-            updateMobile(false);
+                    mobileState--;
+                }
+            }
+
+
+            /*
+                Immer auf einen definierten
+                Zustand zurückspringen.
+            */
+
+            updateMobile(true);
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    /* =========================================================
+       TOUCH CANCEL
+    ========================================================= */
+
+    mobileViewport.addEventListener(
+        "touchcancel",
+        () => {
+
+            isDragging = false;
+
+            updateMobile(true);
+        }
+    );
+
+
+    /* =========================================================
+       RESIZE
+    ========================================================= */
+
+    let resizeTimer;
+
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            clearTimeout(
+                resizeTimer
+            );
+
+
+            resizeTimer =
+                setTimeout(
+                    () => {
+
+                        updateMobile(false);
+
+                    },
+                    100
+                );
+        }
+    );
+
+
+    /* =========================================================
+       START
+    ========================================================= */
+
+    async function init() {
+
+        pages =
+            await findPages();
+
+
+        if (!pages.length) {
+
+            console.error(
+                "Keine Portfolio-Bilder gefunden."
+            );
+
+            return;
         }
 
 
-        init();
+        updateDesktop();
 
-    </script>
+
+        buildMobile();
+
+
+        mobileState = 0;
+
+
+        updateMobile(false);
+    }
+
+
+    init();
+
+</script>
+```
 
 </body>
 </html>
