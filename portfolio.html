@@ -1046,40 +1046,72 @@
                  */
                 if (deltaX < 0) {
 
-                    /*
-                     * Seite 1 links
-                     * ->
-                     * Seite 1 rechts
-                     */
-                    if (mobileSide === 0) {
-
-                        mobileSide = 1;
-
-                        setCurrentPosition(true);
-
-                        return;
-                    }
+    /*
+     * =========================================
+     * NACH LINKS WISCHEN
+     * =========================================
+     */
 
 
-                    /*
-                     * Seite 1 rechts
-                     * ->
-                     * Seite 2 links
-                     */
-                    isAnimating = true;
+    /*
+     * Linke Ansicht
+     * ->
+     * rechte Ansicht derselben Seite
+     */
+    if (mobileSide === 0) {
 
-                    changeMobilePage(1);
+        mobileSide = 1;
 
+        setCurrentPosition(true);
 
-                    setTimeout(() => {
-
-                        isAnimating = false;
-
-                    }, 800);
+        return;
+    }
 
 
-                    return;
-                }
+    /*
+     * WICHTIG:
+     *
+     * Wenn wir bereits bei
+     *
+     * letzte Seite – RECHTS
+     *
+     * sind, darf nichts mehr passieren.
+     */
+    if (
+        mobileCurrentPage === maxPage &&
+        mobileSide === 1
+    ) {
+
+        setCurrentPosition(true);
+
+        return;
+    }
+
+
+    /*
+     * Rechte Ansicht Seite 1+
+     * ->
+     * linke Ansicht der nächsten Seite
+     */
+    if (
+        mobileSide === 1 &&
+        mobileCurrentPage < maxPage
+    ) {
+
+        isAnimating = true;
+
+        changeMobilePage(1);
+
+
+        setTimeout(() => {
+
+            isAnimating = false;
+
+        }, 800);
+
+        return;
+    }
+}
 
 
                 /*
