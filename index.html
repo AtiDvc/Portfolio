@@ -25,6 +25,10 @@
             overflow: hidden;
         }
 
+        /* =========================
+           DESKTOP
+        ========================= */
+
         .home {
             width: 100%;
             height: 100vh;
@@ -37,8 +41,6 @@
             padding: 40px;
         }
 
-        /* COVER */
-
         .cover {
             height: 88vh;
             width: auto;
@@ -46,60 +48,94 @@
 
             object-fit: contain;
             display: block;
-
-            /*box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.15); */
         }
 
-        /* PFEIL */
-
         .next {
-    width: 64px;
-    height: 64px;
+            width: 64px;
+            height: 64px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    text-decoration: none;
+            flex-shrink: 0;
 
-    transition: transform 0.25s ease;
-}
+            text-decoration: none;
 
-.next svg {
-    width: 22px;
-    height: auto;
-    display: block;
-}
+            transition: transform 0.25s ease;
+        }
 
-.next:hover {
-    transform: translateX(8px);
-}
+        .next svg {
+            width: 22px;
+            height: auto;
+            display: block;
+        }
 
-        /* MOBILE */
+        .next:hover {
+            transform: translateX(8px);
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
 
         @media (max-width: 600px) {
-    .home {
-        min-height: 100svh;
-        padding: 20px 18px;
-    }
 
-    .cover {
-        width: min(82vw, 420px);
-        height: auto;
-        max-width: none;
-    }
+            .home {
+                width: 100%;
+                height: 100svh;
 
-    .next {
-        width: 44px;
-        height: 44px;
-        flex-shrink: 0;
-    }
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
 
-    .next svg {
-        width: 18px;
-    }
-}
+                gap: 12px;
+
+                padding: 20px 12px;
+
+                overflow: hidden;
+            }
+
+            .cover {
+                /*
+                    Das Cover darf maximal so groß werden,
+                    dass es sowohl horizontal als auch
+                    vertikal vollständig in den Bildschirm passt.
+                */
+                width: auto;
+                height: min(
+                    82svh,
+                    calc((100vw - 72px) * 1.414)
+                );
+
+                max-width: calc(100vw - 72px);
+
+                object-fit: contain;
+                flex-shrink: 1;
+            }
+
+            .next {
+                width: 32px;
+                height: 50px;
+
+                flex-shrink: 0;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .next svg {
+                width: 14px;
+                height: auto;
+            }
+
+            .next:hover {
+                transform: none;
+            }
+        }
     </style>
 </head>
 
@@ -107,29 +143,37 @@
 
     <main class="home">
 
-        <img src="images/Cover.png" alt="Portfolio Cover" class="cover">
+        <img
+            src="images/Cover.png"
+            alt="Portfolio Cover"
+            class="cover"
+        >
 
-        <a href="portfolio.html" class="next" aria-label="Portfolio öffnen">
-    <svg
-        viewBox="0 0 462.45 818.53"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <polygon
-            fill="#1d1d1b"
-            points="
-                462.3 409.25
-                462.41 409.14
-                53.27 0
-                0 53.27
-                356.01 409.28
-                .04 765.26
-                53.31 818.53
-                462.45 409.39
-                462.3 409.25
-            "
-        />
-    </svg>
-</a>
+        <a
+            href="portfolio.html"
+            class="next"
+            aria-label="Portfolio öffnen"
+        >
+            <svg
+                viewBox="0 0 462.45 818.53"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <polygon
+                    fill="#1d1d1b"
+                    points="
+                        462.3 409.25
+                        462.41 409.14
+                        53.27 0
+                        0 53.27
+                        356.01 409.28
+                        .04 765.26
+                        53.31 818.53
+                        462.45 409.39
+                        462.3 409.25
+                    "
+                />
+            </svg>
+        </a>
 
     </main>
 
