@@ -132,7 +132,6 @@
         .arrow svg {
             width: 18px;
             height: 32px;
-
             display: block;
         }
 
@@ -204,12 +203,17 @@
                 position: absolute;
 
                 top: 50%;
-                left: 0;
+                left: 4vw;
 
-                height: min(
-                    88vw * 210 / 297,
-                    86svh
-                );
+                /*
+                 * A4 QUERFORMAT
+                 *
+                 * 150vw Breite
+                 * 106.06vw Höhe
+                 *
+                 * 150 × 210 / 297 = 106.06
+                 */
+                height: 106.06vw;
 
                 display: flex;
                 align-items: center;
@@ -219,53 +223,52 @@
 
 
             /* =====================================================
-               MOBILE SEITE / FENSTER
-               
-               WICHTIG:
-               overflow:hidden verhindert das doppelte Bild.
+               MOBILE SEITE
             ===================================================== */
 
             .mobile-page {
                 position: relative;
 
-                width: 100vw;
-                height: 100%;
+                width: 92vw;
+                height: 106.06vw;
 
-                flex: 0 0 100vw;
+                flex: 0 0 92vw;
 
                 overflow: hidden;
 
                 background: #ffffff;
 
                 /*
-                 * Seitenschatten
+                 * Papier-/Buchschatten
                  */
                 box-shadow:
-                    0 12px 35px rgba(0, 0, 0, 0.20);
+                    0 15px 40px rgba(0, 0, 0, 0.18);
+
+                z-index: 1;
             }
 
 
             /* =====================================================
                A4 BILD
 
-               176vw bedeutet:
-               Eine komplette A4-Seite ist 176vw breit.
+               Das komplette A4-Blatt ist 150vw breit.
 
-               Dadurch sehen wir ungefähr 57 % der Seite,
-               also etwas mehr als die Hälfte.
+               Das Fenster ist nur 92vw breit.
+
+               Dadurch sehen wir etwas mehr als die Hälfte.
             ===================================================== */
 
             .mobile-page img {
                 position: absolute;
 
-                top: 50%;
+                top: 0;
 
-                width: 176vw;
-                height: auto;
+                width: 150vw;
+                height: 106.06vw;
 
                 max-width: none;
 
-                transform: translateY(-50%);
+                object-fit: contain;
 
                 display: block;
 
@@ -277,9 +280,9 @@
 
 
             /* =====================================================
-               LINKE SEITE
+               LINKE HÄLFTE
 
-               Zeigt den linken Bereich des A4-Blattes.
+               Zeigt den linken Teil des A4-Blattes.
             ===================================================== */
 
             .mobile-page.left img {
@@ -288,22 +291,24 @@
 
 
             /* =====================================================
-               RECHTE SEITE
+               RECHTE HÄLFTE
 
-               Zeigt den rechten Bereich desselben A4-Blattes.
+               150vw - 92vw = 58vw
+
+               Deshalb wird das Bild um 58vw nach links
+               verschoben.
             ===================================================== */
 
             .mobile-page.right img {
-                left: -76vw;
+                left: -58vw;
             }
 
 
             /* =====================================================
-               BUCHFALZ / SEITENKANTE
+               SEITENKANTE / BUCHFALZ
             ===================================================== */
 
-            .mobile-page.left::after,
-            .mobile-page.right::after {
+            .mobile-page::after {
                 content: "";
 
                 position: absolute;
@@ -311,7 +316,7 @@
                 top: 0;
                 bottom: 0;
 
-                width: 5px;
+                width: 4px;
 
                 pointer-events: none;
 
@@ -326,7 +331,7 @@
                     linear-gradient(
                         to left,
                         rgba(0, 0, 0, 0.12),
-                        rgba(0, 0, 0, 0.03),
+                        rgba(0, 0, 0, 0.035),
                         transparent
                     );
             }
@@ -339,7 +344,7 @@
                     linear-gradient(
                         to right,
                         rgba(0, 0, 0, 0.12),
-                        rgba(0, 0, 0, 0.03),
+                        rgba(0, 0, 0, 0.035),
                         transparent
                     );
             }
@@ -524,7 +529,7 @@
 
 
         /* =========================================================
-           PRÜFEN OB BILD EXISTIERT
+           BILD EXISTIERT?
         ========================================================= */
 
         function checkImage(number) {
@@ -792,17 +797,35 @@
 
 
         /* =========================================================
-           MOBILE POSITION AKTUALISIEREN
+           MOBILE POSITION
         ========================================================= */
 
         function updateMobilePosition(
             animate = true
         ) {
 
+            const width =
+                window.innerWidth;
+
+            /*
+             * Jede Position ist 92vw breit.
+             */
+
+            const step =
+                width * 0.92;
+
+            /*
+             * Start mit 4vw Abstand links.
+             */
+
+            const start =
+                width * 0.04;
+
+
             if (animate) {
 
                 mobileTrack.style.transition =
-                    "transform 0.40s cubic-bezier(0.22, 0.61, 0.36, 1)";
+                    "transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1)";
 
             } else {
 
@@ -812,9 +835,14 @@
             }
 
 
+            const position =
+                start -
+                mobilePosition * step;
+
+
             mobileTrack.style.transform =
                 `translate3d(
-                    ${-mobilePosition * 100}vw,
+                    ${position}px,
                     -50%,
                     0
                 )`;
@@ -823,7 +851,7 @@
 
 
         /* =========================================================
-           SWIPE
+           MOBILE SWIPE
         ========================================================= */
 
         let touchStartX = 0;
@@ -875,9 +903,20 @@
                     touchCurrentX -
                     touchStartX;
 
-                const basePosition =
-                    -mobilePosition *
+
+                const width =
                     window.innerWidth;
+
+                const step =
+                    width * 0.92;
+
+                const start =
+                    width * 0.04;
+
+
+                const basePosition =
+                    start -
+                    mobilePosition * step;
 
 
                 mobileTrack.style.transform =
@@ -893,6 +932,10 @@
             }
         );
 
+
+        /* =========================================================
+           SWIPE ENDE
+        ========================================================= */
 
         mobileViewport.addEventListener(
             "touchend",
@@ -917,7 +960,9 @@
                     );
 
 
-                /* SWIPE NACH LINKS */
+                /* =============================================
+                   NACH LINKS
+                ============================================= */
 
                 if (
                     delta < -threshold &&
@@ -930,7 +975,9 @@
                 }
 
 
-                /* SWIPE NACH RECHTS */
+                /* =============================================
+                   NACH RECHTS
+                ============================================= */
 
                 else if (
                     delta > threshold &&
