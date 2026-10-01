@@ -1,183 +1,234 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>Portfolio</title>
+```
+<title>Portfolio</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-        }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            background: #ffffff;
-            font-family: Arial, Helvetica, sans-serif;
-            overflow: hidden;
-        }
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+    }
 
-        /* =========================
-           DESKTOP
-        ========================= */
+    body {
+        background: #ffffff;
+        font-family: Arial, Helvetica, sans-serif;
+        overflow: hidden;
+    }
+
+
+    /* =========================
+       DESKTOP
+    ========================= */
+
+    .home {
+        width: 100%;
+        height: 100vh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 70px;
+
+        padding: 40px;
+    }
+
+    .cover {
+        height: 88vh;
+        width: auto;
+
+        max-width: 75vw;
+
+        object-fit: contain;
+
+        display: block;
+    }
+
+    .next {
+        width: 64px;
+        height: 64px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        text-decoration: none;
+
+        transition:
+            transform 0.25s ease;
+    }
+
+    .next svg {
+        width: 22px;
+        height: auto;
+
+        display: block;
+    }
+
+    .next:hover {
+        transform: translateX(8px);
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
 
         .home {
             width: 100%;
-            height: 100vh;
+            height: 100svh;
 
             display: flex;
+            flex-direction: row;
+
             align-items: center;
             justify-content: center;
 
-            gap: 70px;
-            padding: 40px;
+            /*
+             * Kein zusätzlicher Abstand.
+             * Der Pfeil wird unten über margin-left
+             * gezielt über das Cover gezogen.
+             */
+            gap: 0;
+
+            padding: 20px 12px;
+
+            overflow: hidden;
         }
 
+
         .cover {
-            height: 88vh;
+            /*
+             * Das Cover bleibt so groß wie bisher.
+             */
             width: auto;
-            max-width: 75vw;
+
+            height: min(
+                82svh,
+                calc((100vw - 72px) * 1.414)
+            );
+
+            max-width: calc(100vw - 72px);
 
             object-fit: contain;
+
+            flex-shrink: 1;
+
             display: block;
         }
 
-        .next {
-            width: 64px;
-            height: 64px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .next {
+            width: 26px;
+            height: 50px;
 
             flex-shrink: 0;
 
-            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            transition: transform 0.25s ease;
+            /*
+             * Der Pfeil liegt etwas über dem
+             * rechten Rand des Covers.
+             *
+             * Gleichzeitig wird die Gruppe durch
+             * margin-left kleiner, sodass das Cover
+             * entsprechend weiter nach rechts rückt
+             * und die gesamte Kombination zentriert bleibt.
+             */
+            margin-left: -10px;
+
+            position: relative;
+            z-index: 2;
         }
 
+
         .next svg {
-            width: 22px;
+            width: 14px;
             height: auto;
+
             display: block;
         }
 
+
+        /*
+         * Auf Touch-Geräten kein Hover-Effekt.
+         */
         .next:hover {
-            transform: translateX(8px);
+            transform: none;
         }
+    }
 
+</style>
+```
 
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media (max-width: 600px) {
-
-            .home {
-                width: 100%;
-                height: 100svh;
-
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-
-                gap: 2px;
-
-                padding: 20px 12px;
-
-                overflow: hidden;
-            }
-
-            .cover {
-                /*
-                    Das Cover darf maximal so groß werden,
-                    dass es sowohl horizontal als auch
-                    vertikal vollständig in den Bildschirm passt.
-                */
-                width: auto;
-                height: min(
-                    82svh,
-                    calc((100vw - 72px) * 1.414)
-                );
-
-                max-width: calc(100vw - 72px);
-
-                object-fit: contain;
-                flex-shrink: 1;
-            }
-
-            .next {
-                width: 26px;
-                height: 50px;
-
-                flex-shrink: 0;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                transform: translateX(-30px);
-            }
-
-            .next svg {
-                width: 14px;
-                height: auto;
-            }
-
-            .next:hover {
-                transform: none;
-            }
-        }
-    </style>
 </head>
 
 <body>
 
-    <main class="home">
+```
+<main class="home">
 
-        <img
-            src="images/Cover.png"
-            alt="Portfolio Cover"
-            class="cover"
+    <img
+        src="images/Cover.png"
+        alt="Portfolio Cover"
+        class="cover"
+    >
+
+
+    <a
+        href="portfolio.html"
+        class="next"
+        aria-label="Portfolio öffnen"
+    >
+
+        <svg
+            viewBox="0 0 462.45 818.53"
+            xmlns="http://www.w3.org/2000/svg"
         >
 
-        <a
-            href="portfolio.html"
-            class="next"
-            aria-label="Portfolio öffnen"
-        >
-            <svg
-                viewBox="0 0 462.45 818.53"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <polygon
-                    fill="#1d1d1b"
-                    points="
-                        462.3 409.25
-                        462.41 409.14
-                        53.27 0
-                        0 53.27
-                        356.01 409.28
-                        .04 765.26
-                        53.31 818.53
-                        462.45 409.39
-                        462.3 409.25
-                    "
-                />
-            </svg>
-        </a>
+            <polygon
+                fill="#1d1d1b"
+                points="
+                    462.3 409.25
+                    462.41 409.14
+                    53.27 0
+                    0 53.27
+                    356.01 409.28
+                    .04 765.26
+                    53.31 818.53
+                    462.45 409.39
+                    462.3 409.25
+                "
+            />
 
-    </main>
+        </svg>
+
+    </a>
+
+</main>
+```
 
 </body>
 </html>
