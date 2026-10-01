@@ -1119,37 +1119,67 @@
                  */
                 if (deltaX > 0) {
 
-                    /*
-                     * Rechte Ansicht
-                     * ->
-                     * linke Ansicht derselben Seite
-                     */
-                    if (mobileSide === 1) {
+    /*
+     * =========================================
+     * NACH RECHTS WISCHEN
+     * =========================================
+     *
+     * Wenn wir ganz am Anfang sind:
+     *
+     * Seite 1 – LINKS
+     *
+     * darf NICHT weiter nach rechts.
+     */
+    if (
+        mobileCurrentPage === 1 &&
+        mobileSide === 0
+    ) {
 
-                        mobileSide = 0;
+        setCurrentPosition(true);
 
-                        setCurrentPosition(true);
-
-                        return;
-                    }
-
-
-                    /*
-                     * Linke Ansicht Seite 2
-                     * ->
-                     * rechte Ansicht Seite 1
-                     */
-                    isAnimating = true;
-
-                    changeMobilePage(-1);
+        return;
+    }
 
 
-                    setTimeout(() => {
+    /*
+     * Rechte Ansicht
+     * ->
+     * linke Ansicht derselben Seite
+     */
+    if (mobileSide === 1) {
 
-                        isAnimating = false;
+        mobileSide = 0;
 
-                    }, 800);
-                }
+        setCurrentPosition(true);
+
+        return;
+    }
+
+
+    /*
+     * Linke Ansicht Seite 2+
+     * ->
+     * rechte Ansicht der vorherigen Seite
+     */
+    if (
+        mobileCurrentPage > 1 &&
+        mobileSide === 0
+    ) {
+
+        isAnimating = true;
+
+        changeMobilePage(-1);
+
+
+        setTimeout(() => {
+
+            isAnimating = false;
+
+        }, 800);
+
+        return;
+    }
+}
 
             },
             {
