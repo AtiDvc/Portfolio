@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0, viewport-fit=cover"
@@ -10,6 +11,7 @@
     <title>Portfolio</title>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -27,6 +29,7 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+
         /* =========================================================
            DESKTOP
            ========================================================= */
@@ -40,7 +43,6 @@
             justify-content: center;
 
             position: relative;
-            overflow: hidden;
         }
 
         .desktop-viewer {
@@ -58,34 +60,38 @@
             width: 100%;
             height: 100%;
 
-            object-fit: contain;
-
             display: block;
+
+            object-fit: contain;
 
             box-shadow:
                 0 12px 35px rgba(0, 0, 0, 0.14);
         }
 
+
+        /* Desktop Pfeile */
+
         .desktop-arrow {
             position: absolute;
 
             top: 50%;
-            transform: translateY(-50%);
 
             width: 60px;
             height: 90px;
+
+            padding: 0;
+            margin: 0;
+
+            border: 0;
+            background: transparent;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            padding: 0;
-            margin: 0;
-
-            border: none;
-            background: transparent;
-
             cursor: pointer;
+
+            transform: translateY(-50%);
 
             transition:
                 transform 0.25s ease,
@@ -95,6 +101,7 @@
         .desktop-arrow svg {
             width: 18px;
             height: auto;
+
             display: block;
         }
 
@@ -107,11 +114,15 @@
         }
 
         .desktop-arrow.left:hover {
-            transform: translateY(-50%) translateX(-7px);
+            transform:
+                translateY(-50%)
+                translateX(-7px);
         }
 
         .desktop-arrow.right:hover {
-            transform: translateY(-50%) translateX(7px);
+            transform:
+                translateY(-50%)
+                translateX(7px);
         }
 
         .desktop-arrow.disabled {
@@ -129,17 +140,15 @@
         }
 
 
-        /* =========================================================
-           MOBILE BREAKPOINT
-           ========================================================= */
-
         @media (max-width: 600px) {
 
             html,
             body {
                 width: 100%;
                 height: 100%;
+
                 overflow: hidden;
+
                 overscroll-behavior: none;
             }
 
@@ -158,74 +167,122 @@
                 overflow: hidden;
 
                 touch-action: pan-y;
+
                 user-select: none;
                 -webkit-user-select: none;
             }
 
+
             /*
-             * Die A4-Seite ist absichtlich ca. 150vw breit.
+             * Der sichtbare Bereich.
              *
-             * Dadurch sieht man auf dem Handy etwas mehr als
-             * die Hälfte der A4-Seite.
-             *
-             * A4:
-             * 297 / 210 = 1.414285...
-             *
-             * 150vw / 1.414 = 106.06vw Höhe
+             * Hier darf niemals eine zweite Seite
+             * einfach daneben herumliegen.
              */
-            .mobile-stage {
+            .mobile-window {
                 position: absolute;
 
-                left: 0;
+                inset: 0;
+
+                width: 100%;
+                height: 100%;
+
+                overflow: hidden;
+            }
+
+
+            /*
+             * Container für die aktuell sichtbare Seite.
+             *
+             * Die Seite ist absichtlich größer als
+             * der Bildschirm.
+             */
+            .mobile-page {
+                position: absolute;
+
                 top: 50%;
 
                 height: min(106.06vw, 78svh);
 
-                display: flex;
-                align-items: stretch;
-
-                will-change: transform;
-
-                transform: translate3d(0, -50%, 0);
-
-                transition:
-                    transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
-            }
-
-            /*
-             * WICHTIG:
-             * Jede PNG existiert hier nur EINMAL.
-             */
-            .mobile-sheet {
-                flex: 0 0 auto;
-
-                height: 100%;
                 width: auto;
 
                 aspect-ratio: 297 / 210;
 
-                display: block;
+                margin: 0;
 
-                object-fit: contain;
+                padding: 0;
+
+                background: #ffffff;
 
                 box-shadow:
-                    0 14px 35px rgba(0, 0, 0, 0.15);
+                    0 14px 38px rgba(0, 0, 0, 0.16);
+
+                transform:
+                    translate3d(0, -50%, 0);
+
+                will-change:
+                    left,
+                    transform;
+
+                transition:
+                    left 420ms cubic-bezier(
+                        0.22,
+                        0.61,
+                        0.36,
+                        1
+                    );
             }
 
-            .mobile-sheet img {
+
+            .mobile-page img {
+                display: block;
+
                 width: 100%;
                 height: 100%;
 
-                display: block;
-
                 object-fit: contain;
+
+                pointer-events: none;
+
+                -webkit-user-drag: none;
+                user-select: none;
+                -webkit-user-select: none;
+            }
+
+
+            /*
+             * Während eines Swipes wird die Transition
+             * kurz ausgeschaltet.
+             */
+            .mobile-page.dragging {
+                transition: none;
+            }
+
+
+            /*
+             * Zweite Seite wird nur während eines
+             * tatsächlichen Seitenwechsels benötigt.
+             *
+             * Sie liegt dann exakt dort, wo die neue
+             * Seite beginnen soll.
+             */
+            .mobile-page.next-page {
+                transition:
+                    left 420ms cubic-bezier(
+                        0.22,
+                        0.61,
+                        0.36,
+                        1
+                    );
             }
         }
+
     </style>
 </head>
 
 
 <body>
+
 
     <!-- =========================================================
          DESKTOP
@@ -236,14 +293,16 @@
         <div class="desktop-viewer">
 
             <button
-                class="desktop-arrow left disabled"
                 id="desktopPrev"
+                class="desktop-arrow left disabled"
                 aria-label="Vorherige Seite"
             >
+
                 <svg
                     viewBox="0 0 462.45 818.53"
                     xmlns="http://www.w3.org/2000/svg"
                 >
+
                     <polygon
                         fill="#1d1d1b"
                         points="
@@ -258,7 +317,9 @@
                             462.3 409.25
                         "
                     />
+
                 </svg>
+
             </button>
 
 
@@ -271,14 +332,16 @@
 
 
             <button
-                class="desktop-arrow right"
                 id="desktopNext"
+                class="desktop-arrow right"
                 aria-label="Nächste Seite"
             >
+
                 <svg
                     viewBox="0 0 462.45 818.53"
                     xmlns="http://www.w3.org/2000/svg"
                 >
+
                     <polygon
                         fill="#1d1d1b"
                         points="
@@ -293,7 +356,9 @@
                             462.3 409.25
                         "
                     />
+
                 </svg>
+
             </button>
 
         </div>
@@ -307,14 +372,30 @@
          ========================================================= -->
 
     <main
-        class="mobile-portfolio"
         id="mobilePortfolio"
+        class="mobile-portfolio"
     >
 
         <div
-            class="mobile-stage"
-            id="mobileStage"
-        ></div>
+            id="mobileWindow"
+            class="mobile-window"
+        >
+
+            <div
+                id="mobilePage"
+                class="mobile-page"
+            >
+
+                <img
+                    id="mobileImage"
+                    src="images/portfolio/1.png"
+                    alt="Portfolio Seite 1"
+                    draggable="false"
+                >
+
+            </div>
+
+        </div>
 
     </main>
 
@@ -326,87 +407,109 @@
            SETTINGS
            ========================================================= */
 
-        const IMAGE_FOLDER = "images/portfolio/";
-
-        /*
-         * Wir suchen automatisch:
-         *
-         * 1.png
-         * 2.png
-         * 3.png
-         * ...
-         *
-         * Sobald eine Nummer fehlt, wird aufgehört.
-         */
-        let maxPage = 0;
+        const IMAGE_FOLDER =
+            "images/portfolio/";
 
 
         /* =========================================================
-           FIND AVAILABLE PAGES
+           ELEMENTE
            ========================================================= */
+
+        const desktopSheet =
+            document.getElementById(
+                "desktopSheet"
+            );
+
+        const desktopPrev =
+            document.getElementById(
+                "desktopPrev"
+            );
+
+        const desktopNext =
+            document.getElementById(
+                "desktopNext"
+            );
+
+
+        const mobileWindow =
+            document.getElementById(
+                "mobileWindow"
+            );
+
+        const mobilePage =
+            document.getElementById(
+                "mobilePage"
+            );
+
+        const mobileImage =
+            document.getElementById(
+                "mobileImage"
+            );
+
+
+        /* =========================================================
+           PORTFOLIO SEITEN ERMITTELN
+           ========================================================= */
+
+        let maxPage = 0;
+
+
+        function imageExists(src) {
+
+            return new Promise((resolve) => {
+
+                const image =
+                    new Image();
+
+                image.onload = () => {
+                    resolve(true);
+                };
+
+                image.onerror = () => {
+                    resolve(false);
+                };
+
+                image.src = src;
+            });
+        }
+
 
         async function findPages() {
 
             let page = 1;
 
+
             while (true) {
 
-                const exists = await checkImage(
-                    `${IMAGE_FOLDER}${page}.png`
-                );
+                const exists =
+                    await imageExists(
+                        `${IMAGE_FOLDER}${page}.png`
+                    );
+
 
                 if (!exists) {
                     break;
                 }
 
+
                 maxPage = page;
+
                 page++;
             }
 
+
             if (maxPage === 0) {
-                console.error("Keine Portfolio-Bilder gefunden.");
+
+                console.error(
+                    "Keine Portfolio-Seiten gefunden."
+                );
+
                 return;
             }
 
-            initializePortfolio();
+
+            initialize();
         }
-
-
-        function checkImage(src) {
-
-            return new Promise((resolve) => {
-
-                const img = new Image();
-
-                img.onload = () => resolve(true);
-
-                img.onerror = () => resolve(false);
-
-                img.src = src;
-            });
-        }
-
-
-
-        /* =========================================================
-           STATE
-           ========================================================= */
-
-        let currentPage = 1;
-
-        /*
-         * Desktop:
-         * eine Seite pro Klick
-         *
-         * Mobile:
-         *
-         * 0 = Seite 1 links
-         * 1 = Seite 1 rechts
-         * 2 = Seite 2 links
-         * 3 = Seite 2 rechts
-         * usw.
-         */
-        let mobileState = 0;
 
 
 
@@ -414,32 +517,27 @@
            DESKTOP
            ========================================================= */
 
-        const desktopSheet =
-            document.getElementById("desktopSheet");
-
-        const desktopPrev =
-            document.getElementById("desktopPrev");
-
-        const desktopNext =
-            document.getElementById("desktopNext");
+        let desktopPage = 1;
 
 
         function updateDesktop() {
 
             desktopSheet.src =
-                `${IMAGE_FOLDER}${currentPage}.png`;
+                `${IMAGE_FOLDER}${desktopPage}.png`;
 
             desktopSheet.alt =
-                `Portfolio Seite ${currentPage}`;
+                `Portfolio Seite ${desktopPage}`;
+
 
             desktopPrev.classList.toggle(
                 "disabled",
-                currentPage === 1
+                desktopPage === 1
             );
+
 
             desktopNext.classList.toggle(
                 "disabled",
-                currentPage === maxPage
+                desktopPage === maxPage
             );
         }
 
@@ -448,11 +546,11 @@
             "click",
             () => {
 
-                if (currentPage <= 1) {
+                if (desktopPage <= 1) {
                     return;
                 }
 
-                currentPage--;
+                desktopPage--;
 
                 updateDesktop();
             }
@@ -463,61 +561,40 @@
             "click",
             () => {
 
-                if (currentPage >= maxPage) {
+                if (desktopPage >= maxPage) {
                     return;
                 }
 
-                currentPage++;
+                desktopPage++;
 
                 updateDesktop();
             }
         );
 
 
-
-        /* =========================================================
-           DESKTOP KEYBOARD
-           ========================================================= */
-
         document.addEventListener(
             "keydown",
             (event) => {
 
-                /*
-                 * Nicht reagieren, wenn jemand gerade
-                 * in einem Eingabefeld ist.
-                 */
-                const tag =
-                    document.activeElement?.tagName;
+                if (
+                    event.key === "ArrowLeft" &&
+                    desktopPage > 1
+                ) {
+
+                    desktopPage--;
+
+                    updateDesktop();
+                }
+
 
                 if (
-                    tag === "INPUT" ||
-                    tag === "TEXTAREA" ||
-                    tag === "SELECT"
+                    event.key === "ArrowRight" &&
+                    desktopPage < maxPage
                 ) {
-                    return;
-                }
 
+                    desktopPage++;
 
-                if (event.key === "ArrowLeft") {
-
-                    if (currentPage > 1) {
-
-                        currentPage--;
-
-                        updateDesktop();
-                    }
-                }
-
-
-                if (event.key === "ArrowRight") {
-
-                    if (currentPage < maxPage) {
-
-                        currentPage++;
-
-                        updateDesktop();
-                    }
+                    updateDesktop();
                 }
             }
         );
@@ -525,244 +602,311 @@
 
 
         /* =========================================================
-           MOBILE ELEMENTE ERZEUGEN
+           MOBILE
            ========================================================= */
 
-        const mobileStage =
-            document.getElementById("mobileStage");
+        /*
+         * mobilePage:
+         *
+         * 1 = Seite 1
+         * 2 = Seite 2
+         * ...
+         */
+        let mobileCurrentPage = 1;
 
 
-        function createMobilePages() {
-
-            mobileStage.innerHTML = "";
-
-            /*
-             * WICHTIG:
-             *
-             * Genau EINE .mobile-sheet
-             * pro PNG.
-             *
-             * KEINE linke + rechte Kopie.
-             */
-
-            for (
-                let page = 1;
-                page <= maxPage;
-                page++
-            ) {
-
-                const sheet =
-                    document.createElement("div");
-
-                sheet.className =
-                    "mobile-sheet";
+        /*
+         * 0 = linke Ansicht
+         * 1 = rechte Ansicht
+         */
+        let mobileSide = 0;
 
 
-                const image =
-                    document.createElement("img");
-
-                image.src =
-                    `${IMAGE_FOLDER}${page}.png`;
-
-                image.alt =
-                    `Portfolio Seite ${page}`;
-
-                image.draggable = false;
-
-
-                sheet.appendChild(image);
-
-                mobileStage.appendChild(sheet);
-            }
-        }
+        /*
+         * Abstand vom Bildschirmrand.
+         */
+        const MOBILE_MARGIN = 0.04;
 
 
 
         /* =========================================================
-           MOBILE POSITION BERECHNUNG
+           SEITENGRÖSSE
            ========================================================= */
 
-        function getMobilePosition(state) {
+        function getPageSize() {
 
             const viewportWidth =
                 window.innerWidth;
 
+            const viewportHeight =
+                window.innerHeight;
+
 
             /*
-             * Die tatsächliche Seitenhöhe.
-             *
-             * Dieselbe Formel wie im CSS:
-             *
-             * height = min(106.06vw, 78svh)
+             * Genau dieselbe Größe wie in CSS.
              */
-            const pageHeight =
+            const height =
                 Math.min(
                     viewportWidth * 1.0606,
-                    window.innerHeight * 0.78
+                    viewportHeight * 0.78
                 );
 
 
-            /*
-             * A4-Breite:
-             *
-             * 297 / 210
-             */
-            const pageWidth =
-                pageHeight * (297 / 210);
+            const width =
+                height *
+                (297 / 210);
 
 
-            /*
-             * Welche Seite?
-             *
-             * state:
-             *
-             * 0 -> Seite 1 links
-             * 1 -> Seite 1 rechts
-             * 2 -> Seite 2 links
-             * 3 -> Seite 2 rechts
-             */
-            const pageIndex =
-                Math.floor(state / 2);
-
-
-            const side =
-                state % 2;
-
-
-            /*
-             * Kleiner Rand links/rechts.
-             */
-            const margin =
-                viewportWidth * 0.04;
-
-
-            /*
-             * Position der gewünschten Seite
-             * innerhalb des gesamten Tracks.
-             */
-            const pageStart =
-                pageIndex * pageWidth;
-
-
-            let x;
-
-
-            if (side === 0) {
-
-                /*
-                 * LINKER BEREICH
-                 *
-                 * Die linke Seite des A4-Blattes
-                 * beginnt ungefähr 4vw vom linken
-                 * Bildschirmrand.
-                 */
-                x =
-                    margin - pageStart;
-
-            } else {
-
-                /*
-                 * RECHTER BEREICH
-                 *
-                 * Die rechte Seite des A4-Blattes
-                 * liegt ungefähr 4vw vom rechten
-                 * Bildschirmrand entfernt.
-                 */
-                x =
-                    viewportWidth
-                    - margin
-                    - pageWidth
-                    - pageStart;
-            }
-
-
-            return x;
+            return {
+                width,
+                height
+            };
         }
 
 
 
         /* =========================================================
-           MOBILE POSITION SETZEN
+           POSITIONEN
            ========================================================= */
 
-        function setMobileState(
-            state,
+        function getLeftPosition() {
+
+            const viewportWidth =
+                window.innerWidth;
+
+            return (
+                viewportWidth *
+                MOBILE_MARGIN
+            );
+        }
+
+
+        function getRightPosition() {
+
+            const viewportWidth =
+                window.innerWidth;
+
+            const pageSize =
+                getPageSize();
+
+
+            return (
+                viewportWidth
+                -
+                viewportWidth *
+                MOBILE_MARGIN
+                -
+                pageSize.width
+            );
+        }
+
+
+
+        /* =========================================================
+           AKTUELLE SEITE POSITIONIEREN
+           ========================================================= */
+
+        function setCurrentPosition(
             animate = true
         ) {
 
-            /*
-             * Grenzen.
-             */
-            const maxState =
-                maxPage * 2 - 1;
+            if (!animate) {
 
-
-            mobileState =
-                Math.max(
-                    0,
-                    Math.min(state, maxState)
-                );
-
-
-            const x =
-                getMobilePosition(mobileState);
-
-
-            if (animate) {
-
-                mobileStage.style.transition =
-                    "transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1)";
+                mobilePage.style.transition =
+                    "none";
 
             } else {
 
-                mobileStage.style.transition =
-                    "none";
+                mobilePage.style.transition =
+                    "left 420ms cubic-bezier(0.22, 0.61, 0.36, 1)";
             }
 
 
+            const position =
+                mobileSide === 0
+                    ? getLeftPosition()
+                    : getRightPosition();
+
+
+            mobilePage.style.left =
+                `${position}px`;
+
+
             /*
-             * WICHTIG:
-             *
-             * translate3d bekommt immer die
-             * KOMPLETTE berechnete Position.
-             *
-             * Dadurch kann der Track während eines
-             * Swipes nicht versehentlich seine
-             * Ausgangsposition verlieren.
+             * Nach einem "none"-Update wieder
+             * normale Transition aktivieren.
              */
-            mobileStage.style.transform =
-                `translate3d(${x}px, -50%, 0)`;
+            if (!animate) {
+
+                requestAnimationFrame(() => {
+
+                    mobilePage.style.transition =
+                        "left 420ms cubic-bezier(0.22, 0.61, 0.36, 1)";
+                });
+            }
         }
 
 
 
         /* =========================================================
-           MOBILE SWIPE
+           BILD WECHSELN
+           ========================================================= */
+
+        function setMobileImage(page) {
+
+            mobileImage.src =
+                `${IMAGE_FOLDER}${page}.png`;
+
+            mobileImage.alt =
+                `Portfolio Seite ${page}`;
+        }
+
+
+
+        /* =========================================================
+           NEUE SEITE
+           ========================================================= */
+
+        function changeMobilePage(
+            direction
+        ) {
+
+            if (
+                direction > 0 &&
+                mobileCurrentPage >= maxPage
+            ) {
+                return;
+            }
+
+
+            if (
+                direction < 0 &&
+                mobileCurrentPage <= 1
+            ) {
+                return;
+            }
+
+
+            /*
+             * Die aktuelle Seite fährt komplett
+             * aus dem Bildschirm.
+             */
+            const exitPosition =
+                direction > 0
+                    ? -getPageSize().width
+                    : window.innerWidth;
+
+
+            mobilePage.style.transition =
+                "left 300ms cubic-bezier(0.4, 0, 1, 1)";
+
+
+            mobilePage.style.left =
+                `${exitPosition}px`;
+
+
+            /*
+             * Erst nachdem die alte Seite raus ist,
+             * wird das PNG gewechselt.
+             */
+            setTimeout(() => {
+
+                mobileCurrentPage +=
+                    direction;
+
+
+                /*
+                 * Neue Seite startet auf der
+                 * entsprechenden Seite.
+                 *
+                 * Nach links wischen:
+                 * neue Seite beginnt links.
+                 */
+                mobileSide =
+                    direction > 0
+                        ? 0
+                        : 1;
+
+
+                setMobileImage(
+                    mobileCurrentPage
+                );
+
+
+                /*
+                 * Neue Seite zunächst außerhalb
+                 * des Bildschirms platzieren.
+                 */
+                const startPosition =
+                    direction > 0
+                        ? window.innerWidth
+                        : -getPageSize().width;
+
+
+                mobilePage.style.transition =
+                    "none";
+
+                mobilePage.style.left =
+                    `${startPosition}px`;
+
+
+                /*
+                 * Browser einen Frame geben.
+                 */
+                requestAnimationFrame(() => {
+
+                    requestAnimationFrame(() => {
+
+                        const targetPosition =
+                            mobileSide === 0
+                                ? getLeftPosition()
+                                : getRightPosition();
+
+
+                        mobilePage.style.transition =
+                            "left 420ms cubic-bezier(0.22, 0.61, 0.36, 1)";
+
+
+                        mobilePage.style.left =
+                            `${targetPosition}px`;
+
+                    });
+
+                });
+
+            }, 310);
+        }
+
+
+
+        /* =========================================================
+           SWIPE
            ========================================================= */
 
         let touchStartX = 0;
 
         let touchStartY = 0;
 
-        let touchStartPosition = 0;
+        let touchCurrentX = 0;
 
-        let isDragging = false;
+        let isTouching = false;
 
-        let hasMoved = false;
-
-
-        const mobilePortfolio =
-            document.getElementById("mobilePortfolio");
+        let isAnimating = false;
 
 
-        mobilePortfolio.addEventListener(
+
+        mobileWindow.addEventListener(
             "touchstart",
             (event) => {
 
                 if (
-                    !event.touches ||
                     event.touches.length !== 1
                 ) {
+                    return;
+                }
+
+
+                if (isAnimating) {
                     return;
                 }
 
@@ -773,18 +917,16 @@
                 touchStartY =
                     event.touches[0].clientY;
 
-
-                touchStartPosition =
-                    getMobilePosition(mobileState);
-
-
-                isDragging = true;
-
-                hasMoved = false;
+                touchCurrentX =
+                    touchStartX;
 
 
-                mobileStage.style.transition =
-                    "none";
+                isTouching = true;
+
+
+                mobilePage.classList.add(
+                    "dragging"
+                );
             },
             {
                 passive: true
@@ -793,41 +935,38 @@
 
 
 
-        mobilePortfolio.addEventListener(
+        mobileWindow.addEventListener(
             "touchmove",
             (event) => {
 
-                if (!isDragging) {
+                if (!isTouching) {
                     return;
                 }
 
 
                 if (
-                    !event.touches ||
                     event.touches.length !== 1
                 ) {
                     return;
                 }
 
 
-                const currentX =
+                touchCurrentX =
                     event.touches[0].clientX;
-
-                const currentY =
-                    event.touches[0].clientY;
 
 
                 const deltaX =
-                    currentX - touchStartX;
+                    touchCurrentX -
+                    touchStartX;
+
 
                 const deltaY =
-                    currentY - touchStartY;
+                    event.touches[0].clientY -
+                    touchStartY;
 
 
                 /*
-                 * Wenn die Bewegung stärker vertikal
-                 * als horizontal ist, lassen wir Safari
-                 * die normale vertikale Geste behandeln.
+                 * Nur horizontale Gesten.
                  */
                 if (
                     Math.abs(deltaY) >
@@ -837,19 +976,20 @@
                 }
 
 
-                hasMoved = true;
+                /*
+                 * Aktuelle Position.
+                 */
+                const currentPosition =
+                    mobileSide === 0
+                        ? getLeftPosition()
+                        : getRightPosition();
 
 
                 /*
-                 * Während des Ziehens bewegen wir
-                 * die Seite direkt.
+                 * Seite folgt dem Finger.
                  */
-                mobileStage.style.transform =
-                    `translate3d(
-                        ${touchStartPosition + deltaX}px,
-                        -50%,
-                        0
-                    )`;
+                mobilePage.style.left =
+                    `${currentPosition + deltaX}px`;
             },
             {
                 passive: true
@@ -858,74 +998,127 @@
 
 
 
-        mobilePortfolio.addEventListener(
+        mobileWindow.addEventListener(
             "touchend",
-            (event) => {
+            () => {
 
-                if (!isDragging) {
+                if (!isTouching) {
                     return;
                 }
 
 
-                isDragging = false;
+                isTouching = false;
 
 
-                const endX =
-                    event.changedTouches[0].clientX;
+                mobilePage.classList.remove(
+                    "dragging"
+                );
 
 
                 const deltaX =
-                    endX - touchStartX;
+                    touchCurrentX -
+                    touchStartX;
+
+
+                const threshold =
+                    Math.max(
+                        55,
+                        window.innerWidth * 0.14
+                    );
 
 
                 /*
-                 * Mindestdistanz für einen Swipe.
+                 * Zu kleiner Swipe:
+                 * zurück zur aktuellen Position.
                  */
-                const threshold =
-                    Math.max(
-                        45,
-                        window.innerWidth * 0.12
-                    );
-
-
                 if (
-                    Math.abs(deltaX) >= threshold
+                    Math.abs(deltaX) < threshold
                 ) {
 
-                    if (deltaX < 0) {
+                    setCurrentPosition(true);
 
-                        /*
-                         * Nach links wischen:
-                         * nächster Zustand
-                         */
-                        setMobileState(
-                            mobileState + 1,
-                            true
-                        );
+                    return;
+                }
 
-                    } else {
 
-                        /*
-                         * Nach rechts wischen:
-                         * vorheriger Zustand
-                         */
-                        setMobileState(
-                            mobileState - 1,
-                            true
-                        );
-                    }
-
-                } else {
+                /*
+                 * Nach links:
+                 */
+                if (deltaX < 0) {
 
                     /*
-                     * Kein richtiger Swipe:
-                     * zurück zur aktuellen Position.
+                     * Seite 1 links
+                     * ->
+                     * Seite 1 rechts
                      */
-                    setMobileState(
-                        mobileState,
-                        true
-                    );
+                    if (mobileSide === 0) {
+
+                        mobileSide = 1;
+
+                        setCurrentPosition(true);
+
+                        return;
+                    }
+
+
+                    /*
+                     * Seite 1 rechts
+                     * ->
+                     * Seite 2 links
+                     */
+                    isAnimating = true;
+
+                    changeMobilePage(1);
+
+
+                    setTimeout(() => {
+
+                        isAnimating = false;
+
+                    }, 800);
+
+
+                    return;
                 }
+
+
+                /*
+                 * Nach rechts:
+                 */
+                if (deltaX > 0) {
+
+                    /*
+                     * Rechte Ansicht
+                     * ->
+                     * linke Ansicht derselben Seite
+                     */
+                    if (mobileSide === 1) {
+
+                        mobileSide = 0;
+
+                        setCurrentPosition(true);
+
+                        return;
+                    }
+
+
+                    /*
+                     * Linke Ansicht Seite 2
+                     * ->
+                     * rechte Ansicht Seite 1
+                     */
+                    isAnimating = true;
+
+                    changeMobilePage(-1);
+
+
+                    setTimeout(() => {
+
+                        isAnimating = false;
+
+                    }, 800);
+                }
+
             },
             {
                 passive: true
@@ -935,54 +1128,45 @@
 
 
         /* =========================================================
-           MOBILE RESIZE / ORIENTATION
+           RESIZE
            ========================================================= */
-
-        let resizeTimer;
-
 
         window.addEventListener(
             "resize",
             () => {
 
-                clearTimeout(resizeTimer);
-
-
-                resizeTimer =
-                    setTimeout(
-                        () => {
-
-                            setMobileState(
-                                mobileState,
-                                false
-                            );
-
-                        },
-                        100
-                    );
+                setCurrentPosition(false);
             }
         );
 
 
 
         /* =========================================================
-           INITIALIZE
+           INITIALISIERUNG
            ========================================================= */
 
-        function initializePortfolio() {
+        function initialize() {
 
             updateDesktop();
 
-            createMobilePages();
 
             /*
-             * Start:
-             * Seite 1 linker Bereich.
+             * Mobile:
+             *
+             * Seite 1
+             * linke Ansicht
              */
-            setMobileState(
-                0,
-                false
+            mobileCurrentPage = 1;
+
+            mobileSide = 0;
+
+
+            setMobileImage(
+                mobileCurrentPage
             );
+
+
+            setCurrentPosition(false);
         }
 
 
