@@ -164,25 +164,26 @@
             Alle Seiten liegen EINMAL hintereinander.
         */
         .mobile-track {
-            position: absolute;
+    position: absolute;
 
-            left: 0;
-            top: 50%;
+    left: 0;
+    top: 50%;
 
-            height: min(106.06vw, 78svh);
+    height: min(106.06vw, 78svh);
 
-            display: flex;
-            flex-direction: row;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 
-            align-items: center;
+    gap: 24px;
 
-            will-change: transform;
+    will-change: transform;
 
-            transform: translate3d(0, -50%, 0);
+    transform: translate3d(0, -50%, 0);
 
-            transition:
-                transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
-        }
+    transition:
+        transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
 
         /*
             Eine PNG = genau eine Seite.
@@ -664,20 +665,15 @@
 
 
             const pageIndex =
-                Math.floor(state / 2);
+    Math.floor(state / 2);
 
+const showingRight =
+    state % 2 === 1;
 
-            const showingRight =
-                state % 2 === 1;
+const pageGap = 24;
 
-
-            /*
-                Position der Seite innerhalb
-                des kompletten Tracks.
-            */
-
-            const pageStart =
-                pageIndex * pageWidth;
+const pageStart =
+    pageIndex * (pageWidth + pageGap);
 
 
             const leftMargin =
