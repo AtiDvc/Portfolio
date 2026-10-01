@@ -7,7 +7,6 @@
     <title>Portfolio</title>
 
     <style>
-
         * {
             margin: 0;
             padding: 0;
@@ -28,7 +27,7 @@
 
 
         /* =========================
-           PORTFOLIO
+           DESKTOP
         ========================= */
 
         .portfolio {
@@ -39,12 +38,6 @@
             align-items: center;
             justify-content: center;
         }
-
-
-        /* =========================
-           A4 QUERFORMAT
-           297 : 210
-        ========================= */
 
         .sheet {
             position: relative;
@@ -66,7 +59,7 @@
 
 
         /* =========================
-           PORTFOLIO BILD
+           BILD
         ========================= */
 
         #portfolioImage {
@@ -84,7 +77,7 @@
 
 
         /* =========================
-           PFEILE
+           DESKTOP PFEILE
         ========================= */
 
         .arrow {
@@ -118,11 +111,9 @@
                 opacity 0.25s ease;
         }
 
-
         .arrow:hover {
             opacity: 0.6;
         }
-
 
         .arrow:focus,
         .arrow:focus-visible,
@@ -132,93 +123,179 @@
             box-shadow: none;
         }
 
-
         .arrow svg {
             width: 18px;
             height: 32px;
-
             display: block;
         }
-
-
-        /* =========================
-           LINKER PFEIL
-        ========================= */
 
         .arrow-left {
             left: -55px;
         }
 
-
         .arrow-left svg {
             transform: rotate(180deg);
         }
-
 
         .arrow-left:hover {
             transform: translate(-5px, -50%);
         }
 
-
-        /* =========================
-           RECHTER PFEIL
-        ========================= */
-
         .arrow-right {
             right: -55px;
         }
-
 
         .arrow-right:hover {
             transform: translate(5px, -50%);
         }
 
-
-        /* =========================
-           DEAKTIVIERT
-        ========================= */
-
         .arrow.disabled {
             opacity: 0.15;
-
             pointer-events: none;
         }
 
 
         /* =========================
-           MOBILE
+           TABLET
         ========================= */
 
         @media (max-width: 800px) {
 
+            /*
+             * Auf Mobile wird das Desktop-System
+             * komplett ersetzt.
+             */
+
+            .portfolio {
+                width: 100vw;
+                height: 100svh;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                overflow: hidden;
+            }
+
+
+            /* =========================
+               MOBILE VIEWPORT
+            ========================= */
+
+            .mobile-viewport {
+                position: relative;
+
+                width: 100vw;
+                height: 100svh;
+
+                overflow: hidden;
+
+                touch-action: pan-y;
+            }
+
+
+            /* =========================
+               MOBILE TRACK
+            ========================= */
+
+            .mobile-track {
+                position: absolute;
+
+                top: 50%;
+                left: 0;
+
+                height: min(100vw * 210 / 297, 88svh);
+
+                width: auto;
+
+                display: flex;
+                align-items: center;
+
+                transform:
+                    translate(
+                        0,
+                        -50%
+                    );
+
+                will-change: transform;
+            }
+
+
+            /* =========================
+               MOBILE SEITE
+            ========================= */
+
+            .mobile-page {
+                position: relative;
+
+                width: 100vw;
+                height: 100%;
+
+                flex-shrink: 0;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                overflow: hidden;
+            }
+
+
+            /*
+             * Das eigentliche A4-Bild.
+             *
+             * Es ist doppelt so breit wie
+             * der sichtbare Bereich.
+             */
+
+            .mobile-page img {
+                position: absolute;
+
+                top: 50%;
+
+                width: 200vw;
+                height: auto;
+
+                max-width: none;
+
+                transform:
+                    translateY(-50%);
+
+                display: block;
+
+                user-select: none;
+                -webkit-user-drag: none;
+
+                pointer-events: none;
+            }
+
+
+            /*
+             * Linke Hälfte
+             */
+
+            .mobile-page.left img {
+                left: 0;
+            }
+
+
+            /*
+             * Rechte Hälfte
+             */
+
+            .mobile-page.right img {
+                left: -100vw;
+            }
+
+
+            /* =========================
+               DESKTOP ELEMENTE AUSBLENDEN
+            ========================= */
+
             .sheet {
-                width: 88vw;
+                display: none;
             }
-
-
-            .arrow {
-                width: 26px;
-                height: 44px;
-            }
-
-
-            .arrow-left {
-                left: -34px;
-            }
-
-
-            .arrow-right {
-                right: -34px;
-            }
-
-
-            .arrow svg {
-                width: 15px;
-                height: 27px;
-            }
-
         }
-
     </style>
 </head>
 
@@ -227,34 +304,26 @@
 
     <main class="portfolio">
 
+        <!-- =========================
+             DESKTOP
+        ========================= -->
+
         <div class="sheet">
-
-
-            <!-- =========================
-                 PORTFOLIO BILD
-            ========================= -->
 
             <img
                 id="portfolioImage"
                 alt="Portfolio"
             >
 
-
-            <!-- =========================
-                 LINKER PFEIL
-            ========================= -->
-
             <button
                 id="prevButton"
                 class="arrow arrow-left disabled"
                 aria-label="Vorherige Seite"
             >
-
                 <svg
                     viewBox="0 0 462.45 818.53"
                     xmlns="http://www.w3.org/2000/svg"
                 >
-
                     <polygon
                         fill="#1d1d1b"
                         points="
@@ -269,27 +338,18 @@
                             462.3 409.25
                         "
                     />
-
                 </svg>
-
             </button>
-
-
-            <!-- =========================
-                 RECHTER PFEIL
-            ========================= -->
 
             <button
                 id="nextButton"
                 class="arrow arrow-right disabled"
                 aria-label="Nächste Seite"
             >
-
                 <svg
                     viewBox="0 0 462.45 818.53"
                     xmlns="http://www.w3.org/2000/svg"
                 >
-
                     <polygon
                         fill="#1d1d1b"
                         points="
@@ -304,10 +364,25 @@
                             462.3 409.25
                         "
                     />
-
                 </svg>
-
             </button>
+
+        </div>
+
+
+        <!-- =========================
+             MOBILE
+        ========================= -->
+
+        <div
+            class="mobile-viewport"
+            id="mobileViewport"
+        >
+
+            <div
+                class="mobile-track"
+                id="mobileTrack"
+            ></div>
 
         </div>
 
@@ -335,6 +410,16 @@
                 "nextButton"
             );
 
+        const mobileTrack =
+            document.getElementById(
+                "mobileTrack"
+            );
+
+        const mobileViewport =
+            document.getElementById(
+                "mobileViewport"
+            );
+
 
         /* =========================
            ORDNER
@@ -349,8 +434,18 @@
         ========================= */
 
         let currentPage = 1;
-
         let maxPage = 0;
+
+        /*
+         * Mobile Position:
+         *
+         * 0 = Seite 1 links
+         * 1 = Seite 1 rechts
+         * 2 = Seite 2 links
+         * 3 = Seite 2 rechts
+         */
+
+        let mobilePosition = 0;
 
 
         /* =========================
@@ -359,34 +454,21 @@
 
         function checkImage(number) {
 
-            return new Promise(
-                resolve => {
+            return new Promise(resolve => {
 
-                    const testImage =
-                        new Image();
+                const testImage =
+                    new Image();
 
+                testImage.onload =
+                    () => resolve(true);
 
-                    testImage.onload =
-                        () => {
+                testImage.onerror =
+                    () => resolve(false);
 
-                            resolve(true);
+                testImage.src =
+                    `${IMAGE_FOLDER}/${number}.png`;
 
-                        };
-
-
-                    testImage.onerror =
-                        () => {
-
-                            resolve(false);
-
-                        };
-
-
-                    testImage.src =
-                        `${IMAGE_FOLDER}/${number}.png`;
-
-                }
-            );
+            });
 
         }
 
@@ -399,7 +481,6 @@
 
             maxPage = 0;
 
-
             for (
                 let number = 1;
                 number <= 100;
@@ -407,52 +488,42 @@
             ) {
 
                 const exists =
-                    await checkImage(
-                        number
-                    );
-
-
-                /*
-                 * Sobald eine Nummer
-                 * fehlt, ist Schluss.
-                 */
+                    await checkImage(number);
 
                 if (!exists) {
-
                     break;
-
                 }
 
-
                 maxPage = number;
-
             }
 
-
-            /*
-             * Keine Bilder
-             */
 
             if (maxPage === 0) {
 
                 updateButtons();
 
                 return;
-
             }
 
 
             /*
-             * Erstes Bild laden
+             * Desktop
              */
 
             showImage(1);
+
+
+            /*
+             * Mobile
+             */
+
+            createMobilePages();
 
         }
 
 
         /* =========================
-           BILD ANZEIGEN
+           DESKTOP BILD
         ========================= */
 
         function showImage(number) {
@@ -461,23 +532,17 @@
                 number < 1 ||
                 number > maxPage
             ) {
-
                 return;
-
             }
 
-
             currentPage = number;
-
 
             image.src =
                 `${IMAGE_FOLDER}/${number}.png`;
 
-
             image.classList.add(
                 "visible"
             );
-
 
             updateButtons();
 
@@ -485,14 +550,10 @@
 
 
         /* =========================
-           PFEILE AKTUALISIEREN
+           DESKTOP PFEILE
         ========================= */
 
         function updateButtons() {
-
-            /*
-             * Keine Bilder
-             */
 
             if (maxPage === 0) {
 
@@ -505,13 +566,8 @@
                 );
 
                 return;
-
             }
 
-
-            /*
-             * Erste Seite
-             */
 
             if (currentPage <= 1) {
 
@@ -527,10 +583,6 @@
 
             }
 
-
-            /*
-             * Letzte Seite
-             */
 
             if (
                 currentPage >= maxPage
@@ -552,7 +604,7 @@
 
 
         /* =========================
-           ZURÜCK
+           DESKTOP ZURÜCK
         ========================= */
 
         prevButton.addEventListener(
@@ -574,7 +626,7 @@
 
 
         /* =========================
-           WEITER
+           DESKTOP WEITER
         ========================= */
 
         nextButton.addEventListener(
@@ -596,7 +648,276 @@
 
 
         /* =========================
-           TASTATUR
+           MOBILE SEITEN ERSTELLEN
+        ========================= */
+
+        function createMobilePages() {
+
+            mobileTrack.innerHTML = "";
+
+            for (
+                let page = 1;
+                page <= maxPage;
+                page++
+            ) {
+
+                /*
+                 * Linke Hälfte
+                 */
+
+                const left =
+                    document.createElement(
+                        "div"
+                    );
+
+                left.className =
+                    "mobile-page left";
+
+                left.innerHTML = `
+                    <img
+                        src="${IMAGE_FOLDER}/${page}.png"
+                        alt="Portfolio Seite ${page}"
+                        draggable="false"
+                    >
+                `;
+
+                mobileTrack.appendChild(
+                    left
+                );
+
+
+                /*
+                 * Rechte Hälfte
+                 */
+
+                const right =
+                    document.createElement(
+                        "div"
+                    );
+
+                right.className =
+                    "mobile-page right";
+
+                right.innerHTML = `
+                    <img
+                        src="${IMAGE_FOLDER}/${page}.png"
+                        alt="Portfolio Seite ${page}"
+                        draggable="false"
+                    >
+                `;
+
+                mobileTrack.appendChild(
+                    right
+                );
+
+            }
+
+
+            mobilePosition = 0;
+
+            updateMobilePosition(
+                false
+            );
+
+        }
+
+
+        /* =========================
+           MOBILE POSITION
+        ========================= */
+
+        function updateMobilePosition(
+            animate = true
+        ) {
+
+            const width =
+                window.innerWidth;
+
+            if (!animate) {
+
+                mobileTrack.style.transition =
+                    "none";
+
+            } else {
+
+                mobileTrack.style.transition =
+                    "transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1)";
+
+            }
+
+
+            mobileTrack.style.transform =
+                `translate(
+                    ${-mobilePosition * width}px,
+                    -50%
+                )`;
+
+        }
+
+
+        /* =========================
+           MOBILE SWIPE
+        ========================= */
+
+        let touchStartX = 0;
+        let touchCurrentX = 0;
+
+        let isDragging = false;
+
+
+        mobileViewport.addEventListener(
+            "touchstart",
+            event => {
+
+                if (
+                    event.touches.length !== 1
+                ) {
+                    return;
+                }
+
+                isDragging = true;
+
+                touchStartX =
+                    event.touches[0].clientX;
+
+                touchCurrentX =
+                    touchStartX;
+
+
+                mobileTrack.style.transition =
+                    "none";
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        mobileViewport.addEventListener(
+            "touchmove",
+            event => {
+
+                if (!isDragging) {
+                    return;
+                }
+
+                touchCurrentX =
+                    event.touches[0].clientX;
+
+                const delta =
+                    touchCurrentX -
+                    touchStartX;
+
+                const width =
+                    window.innerWidth;
+
+                const basePosition =
+                    -mobilePosition * width;
+
+                /*
+                 * Track folgt dem Finger.
+                 */
+
+                mobileTrack.style.transform =
+                    `translate(
+                        ${basePosition + delta}px,
+                        -50%
+                    )`;
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        mobileViewport.addEventListener(
+            "touchend",
+            () => {
+
+                if (!isDragging) {
+                    return;
+                }
+
+                isDragging = false;
+
+                const delta =
+                    touchCurrentX -
+                    touchStartX;
+
+                const threshold =
+                    Math.min(
+                        80,
+                        window.innerWidth * 0.18
+                    );
+
+
+                /*
+                 * Swipe nach links
+                 */
+
+                if (
+                    delta < -threshold &&
+                    mobilePosition <
+                    maxPage * 2 - 1
+                ) {
+
+                    mobilePosition++;
+
+                }
+
+
+                /*
+                 * Swipe nach rechts
+                 */
+
+                else if (
+                    delta > threshold &&
+                    mobilePosition > 0
+                ) {
+
+                    mobilePosition--;
+
+                }
+
+
+                /*
+                 * Zur aktuellen Position
+                 */
+
+                updateMobilePosition(
+                    true
+                );
+
+            }
+        );
+
+
+        /* =========================
+           TOUCH ABGEBROCHEN
+        ========================= */
+
+        mobileViewport.addEventListener(
+            "touchcancel",
+            () => {
+
+                if (!isDragging) {
+                    return;
+                }
+
+                isDragging = false;
+
+                updateMobilePosition(
+                    true
+                );
+
+            }
+        );
+
+
+        /* =========================
+           DESKTOP TASTATUR
         ========================= */
 
         document.addEventListener(
@@ -622,6 +943,28 @@
 
                     showImage(
                         currentPage + 1
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           FENSTERGRÖSSE
+        ========================= */
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                if (
+                    window.innerWidth <= 800
+                ) {
+
+                    updateMobilePosition(
+                        false
                     );
 
                 }
