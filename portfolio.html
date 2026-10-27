@@ -1,0 +1,30 @@
+
+<script>
+  const portfolio = document.getElementById("portfolio");
+
+  const totalPages = 23;
+
+  for (let i = 1; i <= totalPages; i++) {
+    const number = String(i).padStart(2, "0");
+
+    const img = document.createElement("img");
+
+    img.src = `images/${number}.webp`;
+    img.alt = `Portfolio Seite ${i}`;
+    img.className = "page";
+
+    if (i <= 4) {
+      // Erste 4 Seiten sofort laden
+      img.loading = "eager";
+      img.fetchPriority = i === 1 ? "high" : "auto";
+    } else {
+      // Ab Seite 5 Lazy Loading
+      img.loading = "lazy";
+      img.fetchPriority = "low";
+    }
+
+    img.decoding = "async";
+
+    portfolio.appendChild(img);
+  }
+</script>
