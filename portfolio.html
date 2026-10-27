@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>Portfolio</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background: #fff;
+    }
+
+    .portfolio {
+      width: 100%;
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 20px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .page img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .error {
+      display: none;
+      padding: 20px;
+      color: #b00020;
+      font: 14px Arial, sans-serif;
+    }
+
+    @media (max-width: 768px) {
+      .portfolio {
+        padding: 0;
+        gap: 2px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="portfolio" id="portfolio"></main>
+
+  <script>
+    const portfolio = document.getElementById("portfolio");
+    const totalPages = 23;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+
+          const img = entry.target;
+
+          if (!img.src) {
+            img.src = img.dataset.src;
+          }
+
+          observer.unobserve(img);
+        });
+      },
+      {
+        rootMargin: "1500px 0px",
+        threshold: 0
+      }
+    );
+
+    for (let i = 1; i <= totalPages; i++) {
+      const number = String(i).padStart(2, "0");
+
+      const page = document.createElement("div");
+      page.className = "page";
+
+      const img = document.createElement("img");
+      const path = `images/${number}.webp`;
+
+      img.alt = `Portfolio Seite ${i}`;
+      img.decoding = "async";
+
+      const error = document.createElement("div");
+      error.className = "error";
+      error.textContent = `Bild ${number}.webp konnte nicht geladen werden.`;
+
+      img.onerror = () => {
+        img.style.display = "none";
+        error.style.display = "block";
+      };
+
+      page.appendChild(img);
+      page.appendChild(error);
+      portfolio.appendChild(page);
+
+      if (i <= 4) {
+        // Erste vier Seiten sofort anfordern
+        img.loading = "eager";
+        img.fetchPriority = i === 1 ? "high" : "auto";
+        img.src = path;
+      } else {
+        // Weitere Seiten erst in der Nähe
+        // des sichtbaren Bereichs laden
+        img.dataset.src = path;
+        observer.observe(img);
+      }
+    }
+  </script>
+
+</body>
+</html>
